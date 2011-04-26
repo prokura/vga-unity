@@ -8,7 +8,7 @@
 ==ミドルウェアとは==
   * 定義。
   * OpenGL, DirectX = API. .NET Framework = ???
-  * Game Engine (Unity, Unreal Engine, Gamebryo)
+  * Game Engine (Unity, Unreal Engine, Gamebryo, !CryEngine)
   * Physics (Havok, PhysX, Bullet, Box2D)
   * Havok - Havok Animation, Havok Behavior, Havok AI, etc...
   * 内製(Crystal, MT Framework, Rage)
@@ -20,8 +20,9 @@
   * ヨーロッパのゲーム業界。
   * DICE (Sweden)
   * Guerilla (Netherlands)
-  * MercurySteam (Spain)
+  * !MercurySteam (Spain)
   * Democratize game development.
+  * ライセンス。
 
 ==プロジェクトについて==
   * 光源の構成。
@@ -50,7 +51,7 @@
 {{{
 collision.gameObject.SendMessage("ApplyDamage");
 }}}
-  * KillTimerスクリプトを追加。
+  * !KillTimerスクリプトを追加。
 {{{
 function ApplyDamage() { 
     Debug.Log("!!DAMAGE!!"); 
@@ -76,7 +77,7 @@ function ApplyDamage() {
 ==パーティクルエフェクト==
   * Smokeをワールドに出してみる。
   * パーティクルエフェクトをちょっと自分で作ってみる。
-  * KillTimerに組み込む。
+  * !KillTimerに組み込む。
 {{{
 var time : float;
  var effect : GameObject;  
