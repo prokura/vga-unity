@@ -1,5 +1,7 @@
 #summary Unity入門(2)
 
+[http://code.google.com/p/vga-unity/downloads/detail?name=UnityIntro2.zip 教材 (UnityIntro2.zip)]
+
 ==イントロ==
   * Prototypeプロジェクトの配布。
   * 操作方法の軽いおさらい。
