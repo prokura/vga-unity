@@ -1,0 +1,169 @@
+#summary Unity入門(2)
+
+==イントロ==
+  * Prototypeプロジェクトの配布。
+  * 操作方法の軽いおさらい。
+  * 箱を積んでみる。
+
+==ミドルウェアとは==
+  * 定義。
+  * OpenGL, DirectX = API. .NET Framework = ???
+  * Game Engine (Unity, Unreal Engine, Gamebryo)
+  * Physics (Havok, PhysX, Bullet, Box2D)
+  * Havok - Havok Animation, Havok Behavior, Havok AI, etc...
+  * 内製(Crystal, MT Framework, Rage)
+  * コスト、スケールメリット、分業化。
+
+==Unity==
+  * Unity Technologies.
+  * デンマーク（コペンハーゲン）。
+  * ヨーロッパのゲーム業界。
+  * DICE (Sweden)
+  * Guerilla (Netherlands)
+  * MercurySteam (Spain)
+  * Democratize game development.
+
+==プロジェクトについて==
+  * 光源の構成。
+  * 壁を立てた。
+
+==親子構造==
+  * ヒエラルキー。
+  * 動きの連動。
+  * 機能の連動（同時消しなど）。
+
+==コリジョンレイヤー==
+  * WallとFence.
+  * 弾が透ける。
+  * 鉄格子。バリア。
+
+==スクリプト復習==
+  * Gun.
+  * 連射化。
+  * Bullet.
+  * Destroyにしてみたり。
+
+==メッセージング==
+  * 概念。
+  * 相手のクラスを特定しないまま、抽象的な情報のやりとり。
+  * Bulletに追加。
+{{{
+collision.gameObject.SendMessage("ApplyDamage");
+}}}
+  * KillTimerスクリプトを追加。
+{{{
+function ApplyDamage() { 
+    Debug.Log("!!DAMAGE!!"); 
+}
+}}}
+  * タイマー処理の追加。
+{{{
+var time : float;
+  
+function ApplyDamage() {
+     enabled = true;
+ }
+
+  function Update() {
+     time -= Time.deltaTime;
+     if (time <= 0.0) {
+         Destroy(gameObject);
+     } 
+}
+}}}
+  * enabledをfalseにして開始する。
+
+==パーティクルエフェクト==
+  * Smokeをワールドに出してみる。
+  * パーティクルエフェクトをちょっと自分で作ってみる。
+  * KillTimerに組み込む。
+{{{
+var time : float;
+ var effect : GameObject;  
+
+function ApplyDamage() {
+     enabled = true;
+ }
+
+  function Update() { 
+    time -= Time.deltaTime;
+     if (time <= 0.0) {
+         Instantiate(effect, transform.position, transform.rotation);
+         Destroy(gameObject); 
+    } 
+}
+}}}
+
+==箱を生成する==
+  * 一定時間毎に箱を作り出すスクリプトを書こう。
+  * Generatorスクリプトを作成。
+  * ポイント：privateを使う。お作法。
+  * ポイント："?"演算子。"!"演算子。
+{{{
+var interval : float; 
+var redBoxPrefab : GameObject;
+ var blueBoxPrefab : GameObject;
+  
+private var timer : float;
+ private var switcher : boolean;
+
+  function Update () {
+     timer -= Time.deltaTime;
+     if (timer < 0.0) {
+         Instantiate(switcher ? redBoxPrefab : blueBoxPrefab,
+                     transform.position, transform.rotation);
+         timer = interval;
+         switcher = !switcher;
+     } 
+}
+}}}
+  * Empty Game Objectを作る。
+  * ランダム要素の追加。
+{{{
+       var xoffs : float = Random.Range(-5.0, 5.0);
+        var zoffs : float = Random.Range(0.0, 5.0);
+        var position : Vector3 = transform.position + Vector3(xoffs, 0, zoffs);
+        Instantiate(switcher ? redBoxPrefab : blueBoxPrefab,
+                    position, Random.rotation);
+}}}
+
+==ゲームマスター==
+  * ゲームマスターの概念。
+  * コンポーネントを作って機能を構成していこう。
+  * 答えをちょっと見てみる。
+  * Empty Game Objectを作ってGame Masterとする。
+  * Masterタグを作ってGame Masterオブジェクトに設定する。
+  * Scoreスクリプトを作る。
+{{{
+private var score : int;
+  function BoxDestroyed () {
+   score += 10; 
+  Debug.Log(score); 
+}
+}}}
+  * KillTimerからメッセージを送るようにする。
+{{{
+    GameObject.FindWithTag("Master").SendMessage("BoxDestroyed");
+}}}
+  * デバッグ表示で動作を確認する。
+
+==GUI表示==
+  * そもそもGUIって？
+  * 様々なパーツがある。
+  * ラベルで文字列を表示。
+{{{
+function OnGUI () { 
+    GUI.Label(Rect(0, 0, 100, 100), "HELLO!!"); 
+}
+}}}
+  * 点数を表示してみる。
+{{{
+function OnGUI () {
+     GUI.Label(Rect(0, 0, 100, 100), "SCORE: " + score.ToString()); 
+}
+}}}
+
+==余力があれば==
+  * 色別に点数を付けてみよう。
+  * フォントを使ってみよう。
+  * パーティクルエフェクトを自分で作ってみよう。 
