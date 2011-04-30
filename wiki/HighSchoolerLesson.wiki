@@ -44,6 +44,17 @@
 
 ==キャラクター==
   * キャラクターを出す。
+  * アニメーション。
+{{{
+if (Input.GetAxis("Horizontal") || Input.GetAxis("Vertical"))
+{
+    animation.CrossFade("run");
+}
+else
+{
+    animation.CrossFade("idle");
+}
+}}}
   * キャラクターも物理。
   * 重さの変更。
   * Constraintsを変える。
@@ -53,7 +64,7 @@
 {{{
 if (Input.GetButtonDown("Jump") && proxy.isGrounded)
 {
-  rigidbody.AddForce(Vector3(0, 30, 0), ForceMode.Impulse);
+    rigidbody.AddForce(Vector3(0, 30, 0), ForceMode.Impulse);
 }
 }}}
   * Jumpアニメーションを組み込む。
