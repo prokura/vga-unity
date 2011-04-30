@@ -1,0 +1,77 @@
+#summary 体験講座用メモ
+
+==イントロ==
+  * 自己紹介。
+  * 経歴、作品。
+
+==Unity==
+  * Unity.
+  * ミドルウェア。
+
+==デモ==
+  * Bootcamp.
+  * Achilles.
+
+==各ビュー解説==
+  * シーンビュー操作
+  * 3Dとは。
+
+==質問==
+  * プログラムやった事ある？
+  * 高校の数学は今どこまで？
+
+==基本ツール==
+  * 箱を置いてみる。
+  * 操作ツールの解説。
+  * 移動、回転、スケール。
+
+==実行==
+  * 実行。
+  * 弾を撃つ。
+  * 箱を積み上げてみよう。
+
+==物理挙動==
+  * 物理シムとは。
+  * 剛体物理。
+  * 重さを変える。
+  * 運動量保存の法則。
+
+==スクリプト==
+  * スクリプト、プログラム。
+  * Bulletの中身。
+  * Destroyしてみよう。
+  * tag判定。
+
+==キャラクター==
+  * キャラクターを出す。
+  * キャラクターも物理。
+  * 重さの変更。
+  * Constraintsを変える。
+
+==ジャンプをつくろう==
+  * AddForceで浮かす。
+{{{
+if (Input.GetButtonDown("Jump") && proxy.isGrounded)
+{
+  rigidbody.AddForce(Vector3(0, 30, 0), ForceMode.Impulse);
+}
+}}}
+  * Jumpアニメーションを組み込む。
+{{{
+if (!proxy.isGrounded)
+{
+    animation.Play("jump");
+}
+else if (Input.GetAxis("Horizontal") || Input.GetAxis("Vertical"))
+{
+    animation.CrossFade("run");
+}
+else
+{
+    animation.CrossFade("idle");
+}
+}}}
+
+==ビルド==
+  * 実行。
+  * 持ち帰り準備。
