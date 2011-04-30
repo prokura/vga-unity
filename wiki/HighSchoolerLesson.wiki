@@ -60,7 +60,7 @@ else
   * Constraintsを変える。
 
 ==ジャンプをつくろう==
-  * AddForceで浮かす。
+  * !AddForceで浮かす。
 {{{
 if (Input.GetButtonDown("Jump") && proxy.isGrounded)
 {
