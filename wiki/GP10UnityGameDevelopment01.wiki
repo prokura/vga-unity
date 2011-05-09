@@ -46,7 +46,7 @@
 == 床を動かす ==
   * プログラムで動かす場合は、Rigidbodyコンポーネントを追加してisKinematicをオンにする。
   * 余力があれば、プログラムを書いて制御してみる。
-  * ProjectビューのCreate→JavaScriptで新規スクリプト作成。
+  * ProjectビューのCreate→!JavaScriptで新規スクリプト作成。
   * スクリプトを迷路の親オブジェクトにドラッグ＆ドロップする。
 {{{
 function Update () {
