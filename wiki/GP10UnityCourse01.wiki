@@ -73,7 +73,7 @@
 
 以下の手本と同じものを作成する。
 
-[http://dl.dropbox.com/u/1565619/VgaUnity/PhysicsLesson.html 手本のページ]
+[http://dl.dropbox.com/u/14572092/VgaUnity/PhysicsLesson.html 手本のページ]
 
 余力があれば、自分なりのアレンジを加えてもよい。
 
