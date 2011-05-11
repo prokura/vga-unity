@@ -56,9 +56,24 @@ function Update () {
 }
 }}}
 
+== 問題 ==
+  * ボールが止まる。
+  * ボールが床を抜ける。
+
+ボールが止まるのは、
+
+== ボールのスリープを避ける ==
+  * Ballスクリプトを作成。
+  * ボールのプレハブにドラッグ＆ドロップ。
+{{{
+function Update () {
+	rigidbody.WakeUp();
+}
+}}}
+
 == 重力コントローラーを作る ==
   * シーンに空のゲームオブジェクトを追加。
-  * GravityControllerを作成し、空のゲームオブジェクトにドラッグ＆ドロップ。
+  * !GravityControllerスクリプトを作成し、空のゲームオブジェクトにドラッグ＆ドロップ。
 {{{
 function Update () {
 	Physics.gravity = 
