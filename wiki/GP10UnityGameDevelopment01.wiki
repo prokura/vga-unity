@@ -56,6 +56,9 @@ function Update () {
 }
 }}}
 
+== 重力コントローラーを作る ==
+  * シーンに空のゲームオブジェクトを追加。
+  * GravityControllerを作成し、空のゲームオブジェクトにドラッグ＆ドロップ。
 {{{
 function Update () {
 	Physics.gravity = 
@@ -64,7 +67,6 @@ function Update () {
 		(Vector3.up * -20.0);
 }
 }}}
-
 
 == とりあえず制作 ==
   * 適当な所で提出。
