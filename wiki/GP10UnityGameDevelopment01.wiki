@@ -124,8 +124,8 @@ function OnTriggerEnter (other : Collider) {
 == ゴール判定 ==
   * トリガーを配置する。
   * トリガーに入っているボールの数を、配置されているボールの総数と比較すればよい。
-  * OnTriggerExitを使えば、ボールがトリガーを出たタイミングも検出できる。
-  * GameObject.FindGameObjectsWithTagを使えば、Ballタグを持つオブジェクトを総検索することができる。その配列の長さから、ボールの総数が分かる。
+  * !OnTriggerExitを使えば、ボールがトリガーを出たタイミングも検出できる。
+  * !GameObject.!FindGameObjectsWithTagを使えば、Ballタグを持つオブジェクトを総検索することができる。その配列の長さから、ボールの総数が分かる。
 
 {{{
 private var counter : int;
