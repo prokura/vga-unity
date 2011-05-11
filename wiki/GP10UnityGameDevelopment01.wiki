@@ -121,6 +121,32 @@ function OnTriggerEnter (other : Collider) {
 }
 }}}
 
+== ゴール判定 ==
+
+{{{
+private var counter : int;
+private var totalBall : int;
+
+function Start () {
+	totalBall = GameObject.FindGameObjectsWithTag("Ball").length;
+}
+
+function OnTriggerEnter (other : Collider) {
+	if (other.gameObject.tag == "Ball") {
+		counter++;
+		if (counter == totalBall) {
+			Debug.Log("CLEARED!!!");
+		}
+	}
+}
+
+function OnTriggerExit (other : Collider) {
+	if (other.gameObject.tag == "Ball") {
+		counter--;
+	}
+}
+}}}
+
 == とりあえず制作 ==
   * 適当な所で提出。
 
