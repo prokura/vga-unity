@@ -88,6 +88,18 @@ function Update () {
 }}}
   * 迷路のコントローラーは削除する。
 
+== 見た目の傾きを擬似的に作り出す ==
+  * 空のオブジェクトを作る（これが親オブジェクトになる）。
+  * 親オブジェクトの子としてカメラ、光源、背景、等々を追加する。
+  * 親オブジェクトに次のスクリプトを与える（迷路を傾けるオブジェクトの符号を変えただけ）。
+{{{
+function Update () {
+	transform.rotation = 
+		Quaternion.AngleAxis(Input.GetAxis("Horizontal") * -10.0, Vector3.forward) *
+		Quaternion.AngleAxis(Input.GetAxis("Vertical") * 10.0, Vector3.right);
+}
+}}}
+
 == とりあえず制作 ==
   * 適当な所で提出。
 
