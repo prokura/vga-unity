@@ -128,26 +128,30 @@ function OnTriggerEnter (other : Collider) {
   * !GameObject.!FindGameObjectsWithTagを使えば、Ballタグを持つオブジェクトを総検索することができる。その配列の長さから、ボールの総数が分かる。
 
 {{{
-private var counter : int;
-private var totalBall : int;
+private var counter : int; // トリガーに触れているボールの数
+private var totalBall : int; // シーン中に存在するボールの総数
 
 function Start () {
-	totalBall = GameObject.FindGameObjectsWithTag("Ball").length;
+    // シーン中のボールの総数を取得する。
+    totalBall = GameObject.FindGameObjectsWithTag("Ball").length;
 }
 
 function OnTriggerEnter (other : Collider) {
-	if (other.gameObject.tag == "Ball") {
-		counter++;
-		if (counter == totalBall) {
-			Debug.Log("CLEARED!!!");
-		}
-	}
+    // 相手はボールか？タグでチェック。
+    if (other.gameObject.tag == "Ball") {
+        // カウンターをインクリメント。
+        counter++;
+        // カウンターが総数になっていればクリア！！
+        if (counter == totalBall) {
+            Debug.Log("CLEARED!!!");
+        }
+    }
 }
 
 function OnTriggerExit (other : Collider) {
-	if (other.gameObject.tag == "Ball") {
-		counter--;
-	}
+    if (other.gameObject.tag == "Ball") {
+        counter--;
+    }
 }
 }}}
 
