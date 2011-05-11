@@ -156,6 +156,10 @@ function OnTriggerExit (other : Collider) {
 }}}
 
 == クリアメッセージの表示 ==
+  * Unityで文字表示を行うにはGUIを使うのが最も手軽。
+  * GUIの処理はOnGUI関数の中に書く。
+  * GUIの表示のされ方は、!GUIStyleによって指定することができる。
+  * 次のスクリプトのように、パブリックな変数としてGUIStyleを定義すると、Inspector上でスタイルの中身を設定できるようになる。
 
 {{{
 var style : GUIStyle;
