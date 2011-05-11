@@ -155,6 +155,42 @@ function OnTriggerExit (other : Collider) {
 }
 }}}
 
+== クリアメッセージの表示 ==
+
+{{{
+var style : GUIStyle;
+
+private var counter : int;
+private var totalBall : int;
+private var cleared : boolean;
+
+function Start () {
+	totalBall = GameObject.FindGameObjectsWithTag("Ball").length;
+}
+
+function OnTriggerEnter (other : Collider) {
+	if (other.gameObject.tag == "Ball") {
+		counter++;
+		if (counter == totalBall) {
+			Debug.Log("CLEARED!!!");
+			cleared = true;
+		}
+	}
+}
+
+function OnTriggerExit (other : Collider) {
+	if (other.gameObject.tag == "Ball") {
+		counter--;
+	}
+}
+
+function OnGUI () {
+	if (cleared) {
+    	GUI.Label (Rect(0, 0, Screen.width, Screen.height), "Cleared!!", style);
+	}
+}
+}}}
+
 == とりあえず制作 ==
   * 適当な所で提出。
 
