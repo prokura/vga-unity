@@ -100,6 +100,15 @@ function Update () {
 }
 }}}
 
+== トラップを配置 ==
+
+{{{
+function OnTriggerEnter (other : Collider) {
+	other.transform.position =
+		GameObject.FindWithTag("Respawn").transform.position;
+}
+}}}
+
 == とりあえず制作 ==
   * 適当な所で提出。
 
