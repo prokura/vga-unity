@@ -129,3 +129,36 @@ function Update () {
     transform.localScale = Vector3(1, 1, 1) * (1.0 + Mathf.Sin(Time.time * 2.1));
 }
 }}}
+
+=== 余力があれば ===
+
+  * {{{position}}}と{{{localPosition}}}の違いについて。
+
+= 変数の使用 =
+
+  * スケールの最後の例で、変数を使ってみる。
+
+{{{
+var freq : float;
+
+function Update () {
+    transform.localScale = Vector3(1, 1, 1) * (1.0 + Mathf.Sin(Time.time * freq));
+}
+}}}
+
+  * Inspectorビューに変数が出現する。
+  * Inspectorビュー上で{{{freq}}}を2に設定して実行。
+  * 実行後に値を変更してみる。
+  * 実行終了時に値が戻ってしまうことを確認する。
+
+  * 変数を隠すには{{{private}}}を使う。
+
+{{{
+private var freq : float;
+
+function Update () {
+    transform.localScale = Vector3(1, 1, 1) * (1.0 + Mathf.Sin(Time.time * freq));
+}
+}}}
+
+  * Inspectorビューから{{{freq}}}が消えたことを確認する。
