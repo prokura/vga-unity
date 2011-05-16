@@ -180,3 +180,11 @@ function OnTriggerStay (other : Collider) {
 }}}
 
   *  連続的な力を与えるには{{{ForceMode.Force}}}を使う。
+
+= 余力があれば =
+
+  * メッセージングを使った自動ドア。
+
+= 課題の提出 =
+
+  * 次回の始めに回収。
