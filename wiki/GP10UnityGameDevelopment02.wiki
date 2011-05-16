@@ -184,6 +184,7 @@ function OnTriggerStay (other : Collider) {
 = 余力があれば =
 
   * メッセージングを使った自動ドア。
+  * GUIを使った面セレクト。
 
 = 課題の提出 =
 
