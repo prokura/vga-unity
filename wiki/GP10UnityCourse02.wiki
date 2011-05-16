@@ -64,3 +64,22 @@ function Update () {
     transform.position.x = Time.time;
 }
 }}}
+
+  * サイン波でY軸を揺らしてみる。
+
+{{{
+function Update () {
+    transform.position.x = Time.time;
+    transform.position.y = Mathf.Sin(Time.time);
+}
+}}}
+
+  * ベクトルクラスで一度に代入。
+
+{{{
+function Update () {
+    transform.position = Vector3(Mathf.Cos(Time.time * 2.0) * 3.0,
+                                 Mathf.Sin(Time.time * 5.1) * 3.0,
+                                 0.0);
+}
+}}}
