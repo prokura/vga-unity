@@ -11,7 +11,7 @@
   * "File"→"Build Settings"で"Scenes in Build"ボックスの中にすべてのシーンが含まれていることを確認する。
 
   * タイトル画面に必要な要素以外は削除する。
-  * TitleScreenオブジェクトとTitleScreenスクリプトを追加。
+  * !TitleScreenオブジェクトと!TitleScreenスクリプトを追加。
 
 {{{
 var labelStyle : GUIStyle;
@@ -79,3 +79,28 @@ function OnGUI() {
   * 内容を復習しながら確認。
   * {{{yield}}}は「処理を一時停止する」という構文。
   * {{{yield}}}の次には再開条件を指定する。ここでは{{{WaitForSeconds}}}で2秒待つという条件を指定。
+
+  * これで複数ステージを扱えるようになった。
+
+= トラップを点滅させてみる =
+
+  * !FlickerEffectスクリプトを新規作成。
+
+{{{
+private var originalColor : Color;
+
+function Awake () {
+    originalColor = renderer.material.color;
+}
+
+function Update () {
+    var level : float = Mathf.Abs(Mathf.Sin(Time.time * 20));
+    renderer.material.color = originalColor * level;
+}
+}}}
+
+  * スクリプトからマテリアルにアクセスするには{{{renderer.material}}}を使う。
+  * カラー情報をサイン波で点滅させている。
+  * 色に対する掛け算を使っている。
+
+  * !FlickerEffectスクリプトをTrapプレハブにドラッグ＆ドロップ。
