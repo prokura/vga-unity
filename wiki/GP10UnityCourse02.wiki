@@ -172,3 +172,19 @@ function Update () {
 }}}
 
   * Inspectorビューから{{{freq}}}が消えたことを確認する。
+
+= 課題 =
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/PoppingBox.html 手本]と同じものを作成する。
+
+=== ヒント ===
+
+  * 絶対値とサイン波の組み合わせ。
+
+{{{
+Mathf.Abs( Math.Sin(...) )
+}}}
+
+=== 余力があれば ===
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/PoppingBox2.html 数を増やしてみたり]、箱を他の物体に入れ替えてみたり、もっと凝った動きにしてみたり……
