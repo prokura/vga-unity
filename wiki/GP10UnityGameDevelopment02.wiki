@@ -1,0 +1,81 @@
+#summary Unityゲーム開発 (2)
+
+= イントロ =
+
+  * 前回やったことのおさらい。
+
+= タイトル画面シーンの作成 =
+
+  * 現状のシーンは"Main"で保存。
+  * 別名でシーンを保存することで複写する。名前は"Title"とする。
+  * "File"→"Build Settings"で"Scenes in Build"ボックスの中にすべてのシーンが含まれていることを確認する。
+
+  * タイトル画面に必要な要素以外は削除する。
+  * TitleScreenオブジェクトとTitleScreenスクリプトを追加。
+
+{{{
+var labelStyle : GUIStyle;
+
+function Update () {
+    if (Input.GetButtonDown("Jump")) {
+        Application.LoadLevel("Main");
+    }
+}
+
+function OnGUI () {
+    var sw = Screen.width;
+    var sh = Screen.height;
+    GUI.Label(Rect(0, sh / 4, sw, sh / 4), "BALL MAZE", labelStyle);
+    GUI.Label(Rect(0, sh / 2, sw, sh / 4), "Hit Space Key", labelStyle);
+}
+}}}
+
+  * {{{Application.LoadLevel}}}関数でシーンのロードを行う。
+
+  * Label Styleの設定を行う。
+  * 実行確認。
+
+=== クリア時の処理の改造 ===
+
+  * タイトル画面へ戻るようにする。
+
+{{{
+var labelStyle : GUIStyle;
+
+private var ballCount : int;
+private var counter : int;
+private var cleared : boolean;
+
+function Start() {
+    ballCount = GameObject.FindGameObjectsWithTag("Ball").length;
+}
+
+function OnTriggerEnter(other : Collider) {
+    if (other.gameObject.tag == "Ball") {
+        counter++;
+        if (counter == ballCount && cleared == false) {
+            cleared = true;
+            yield WaitForSeconds(2.0);
+            Application.LoadLevel("Title");
+        }
+    }
+}
+
+function OnTriggerExit(other : Collider) {
+    if (other.gameObject.tag == "Ball") {
+        counter--;
+    }
+}
+
+function OnGUI() {
+    if (cleared == true) {
+        var sw = Screen.width;
+        var sh = Screen.height;
+        GUI.Label(Rect(0, sh / 3, sw, sh / 3), "CLEARED!", labelStyle);
+    }
+}
+}}}
+
+  * 内容を復習しながら確認。
+  * {{{yield}}}は「処理を一時停止する」という構文。
+  * {{{yield}}}の次には再開条件を指定する。ここでは{{{WaitForSeconds}}}で2秒待つという条件を指定。
