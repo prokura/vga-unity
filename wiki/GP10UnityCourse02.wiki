@@ -35,12 +35,32 @@
   * Hierarchyビューの"Create"からCubeを作成。
   * Hierarchyビューの"Create"からDirectional Lightを作成。
     * 適当に回転して光が当たるようにする。
-  * Projectビューの"Create"からJavaScriptを作成。
+  * Projectビューの"Create"から!JavaScriptを作成。
   * スクリプトの名前を"Test"に変更。
   * Testスクリプトをダブルクリックでエディタを起動。
 
 {{{
 function Update () {
-	Debug.Log("Hello, world");
+    Debug.Log("Hello, world");
+}
+}}}
+
+  * TestスクリプトをHierarchyビューのCubeにドラッグ＆ドロップ。
+  * 実行してコンソールに"Hello, world"が出力されることを確認する。
+
+= トランスフォームの制御 =
+
+  * トランスフォームとは「変換」「変形」の意。
+  * オブジェクトの位置・回転・スケールを保持。
+  * プログラムからアクセスするにはtransformプロパティを使う。
+
+=== 位置(position) ===
+
+  * Testスクリプトを編集して位置(position)へのアクセスを試してみる。
+  * X軸上を時間で動く。
+
+{{{
+function Update () {
+    transform.position.x = Time.time;
 }
 }}}
