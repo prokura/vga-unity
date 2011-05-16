@@ -83,3 +83,49 @@ function Update () {
                                  0.0);
 }
 }}}
+
+=== 回転(rotation) ===
+
+  * 回転の表現にはクオータニオン(Quaternion)を使う。
+  * Y軸回転してみる。
+
+{{{
+function Update () {
+    transform.rotation = Quaternion.AngleAxis(Time.time * 180.0, Vector3.up);
+}
+}}}
+
+  * {{{Quaternion.AngleAxis}}}は、任意の軸周りの回転を生成する関数。角度、軸、の順で引数を与える。
+  * {{{Vector3.up}}}は{{{Vector3(0,1,0)}}}と同義。
+
+  * X軸回転を加えてみる。
+
+{{{
+function Update () {
+    transform.rotation = Quaternion.AngleAxis(Time.time * 180.0, Vector3.up) *
+                         Quaternion.AngleAxis(Time.time * 33.3, Vector3.right);
+}
+}}}
+
+  * {{{Vector3.right}}}は{{{Vector3(1, 0, 0)}}}と同義。
+  * クオータニオンの回転は、掛け算によって合成することができる。
+
+=== スケール(localScale) ===
+
+  * 横幅を伸び縮みさせてみる。
+
+{{{
+function Update () {
+    transform.localScale.x = 1.0 + Mathf.Sin(Time.time * 2.1);
+}
+}}}
+
+  * スケール値は1.0倍が基準になる。
+
+  * 大きさを拡縮させてみる。
+
+{{{
+function Update () {
+    transform.localScale = Vector3(1, 1, 1) * (1.0 + Mathf.Sin(Time.time * 2.1));
+}
+}}}
