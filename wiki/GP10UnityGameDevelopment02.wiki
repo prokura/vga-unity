@@ -104,3 +104,39 @@ function Update () {
   * 色に対する掛け算を使っている。
 
   * !FlickerEffectスクリプトをTrapプレハブにドラッグ＆ドロップ。
+
+= 回転する障害物を作ってみる =
+
+  * Cubeを配置。
+  * Spinnerスクリプトを新規作成。Cubeに追加。
+
+{{{
+function Update () {
+    transform.localRotation = Quaternion.AngleAxis(Time.time * -45.0, Vector3.up);
+}
+}}}
+
+= 開閉する障害物を作ってみる =
+
+  * Cubeを配置。
+  * Sliderrスクリプトを新規作成。Cubeに追加。
+
+{{{
+private var origin : Vector3;
+
+function Start () {
+    origin = transform.position;
+}
+
+function Update () {
+    var dx : float = Mathf.Sin(Time.time) * 3.0;
+    transform.position = origin + Vector3(dx, 0, 0);
+}
+}}}
+
+  * このバージョンは移動方向が固定。
+  * transformの{{{up}}}, {{{right}}}, {{{forward}}}プロパティをうまく使えば、方向を姿勢に追従させることができる。
+
+{{{
+    transform.position = origin + transform.right * dx;
+}}}
