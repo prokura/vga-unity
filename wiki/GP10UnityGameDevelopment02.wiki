@@ -119,7 +119,7 @@ function Update () {
 = 開閉する障害物を作ってみる =
 
   * Cubeを配置。
-  * Sliderrスクリプトを新規作成。Cubeに追加。
+  * Sliderスクリプトを新規作成。Cubeに追加。
 
 {{{
 private var origin : Vector3;
@@ -139,4 +139,28 @@ function Update () {
 
 {{{
     transform.position = origin + transform.right * dx;
+}}}
+
+= バンパーを作ってみる =
+
+  * Cubeを配置。
+  * Bumperスクリプトを新規作成。Cubeに追加。
+  * 下方向に跳ね返すバージョン。
+
+{{{
+function OnCollisionEnter (collision : Collision) {
+    collision.rigidbody.AddForce(Vector3(0, 0, -20), ForceMode.Impulse);
+}
+}}}
+
+  * 力を与えるには{{{AddForce}}}を使う。引数は、力のベクトルと、力を与えるモード。
+  * 瞬間的な力を与えるには{{{ForceMode.Impulse}}}を使う。
+
+  * 外側に弾き返すよう改良してみる。
+
+{{{
+function OnCollisionEnter (collision : Collision) {
+    var dir : Vector3 = collision.transform.position - transform.position;
+    collision.rigidbody.AddForce(dir.normalized * 20.0, ForceMode.Impulse);
+}
 }}}
