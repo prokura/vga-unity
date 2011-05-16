@@ -25,7 +25,7 @@
 = スクリプト入門 =
 
   * Unityのスクリプトについて。
-  * JavaScriptとUnityスクリプトの違い。
+  * !JavaScriptとUnityスクリプトの違い。
   * C#について。
   * Monoと.NETについて。
 
