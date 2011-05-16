@@ -164,3 +164,19 @@ function OnCollisionEnter (collision : Collision) {
     collision.rigidbody.AddForce(dir.normalized * 20.0, ForceMode.Impulse);
 }
 }}}
+
+= 磁力フィールドを作ってみる =
+
+  * Cubeを配置。
+  * ColliderのIs Triggerをオンにする。
+  * Magnetスクリプトを新規作成。Cubeに追加。
+
+{{{
+function OnTriggerStay (other : Collider) {
+    if (other.gameObject.tag == "Ball") {
+        other.rigidbody.AddForce(Vector3(0, 0, -20), ForceMode.Force);
+    }
+}
+}}}
+
+  *  連続的な力を与えるには{{{ForceMode.Force}}}を使う。
