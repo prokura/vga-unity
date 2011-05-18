@@ -198,10 +198,39 @@ function OnTriggerStay (other : Collider) {
 
   *  連続的な力を与えるには{{{ForceMode.Force}}}を使う。
 
-= 余力があれば =
+= メッセージング（オブジェクト間連携） =
 
-  * メッセージングを使った自動ドア。
-  * GUIを使った面セレクト。
+  * 連携する相手はGameObject型の変数によって指定することができる。
+  * 連携する相手に対する指令はメッセージングという形で伝える。
+  * メッセージを伝えるには{{{SendMessage}}}関数を使う。
+
+  * センサー側は、例えばこんな実装になる。
+
+{{{
+var doorObject : GameObject;
+
+function OnTriggerEnter(other : Collider) {
+    doorObject.SendMessage("OpenDoor");
+}
+
+function OnTriggerExit(other : Collider) {
+    doorObject.SendMessage("CloseDoor");
+}
+}}}
+
+  * メッセージを受信する側は、メッセージ名と同じ関数を定義する。例えばこんな実装になる。
+
+{{{
+private var isOpen : boolean;
+
+function OpenDoor() {
+    isOpen = true;
+}
+
+function CloseDoor() {
+    isOpen = false;
+}
+}}}
 
 = 課題の提出 =
 
