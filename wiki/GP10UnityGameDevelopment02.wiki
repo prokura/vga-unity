@@ -86,7 +86,11 @@ function OnGUI() {
 = 2D描画 =
 
 {{{
-GUI.DrawTexture(...);
+var titleTexture : Texture2D;
+
+function OnGUI () {
+	GUI.DrawTexture(Rect((Screen.width - 512) * 0.5, 0, 512, 128), titleTexture);
+}
 }}}
 
 = トラップを点滅させてみる =
