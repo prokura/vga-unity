@@ -82,6 +82,12 @@ function OnGUI() {
 
   * これで複数ステージを扱えるようになった。
 
+= 2D描画 =
+
+{{{
+GUI.DrawTexture(...);
+}}}
+
 = トラップを点滅させてみる =
 
   * !FlickerEffectスクリプトを新規作成。
