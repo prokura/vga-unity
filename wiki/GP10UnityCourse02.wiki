@@ -21,7 +21,7 @@
 === 提出ディレクトリ ===
 
 {{{
-\\G-Server\Public\GP\Unity\0516
+\\G-Server\Public\GP\Unity\Middleware0518
 }}}
 
 === 提出の手順 ===
