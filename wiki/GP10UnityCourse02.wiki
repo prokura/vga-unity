@@ -58,6 +58,21 @@ function Update () {
   * TestスクリプトをHierarchyビューのCubeにドラッグ＆ドロップ。
   * 実行してコンソールに"Hello, world"が出力されることを確認する。
 
+= 変数の定義 =
+
+  * UnityのJavaScriptで変数を定義するには{{{var 変数名 : 型;}}}
+
+{{{
+var hogehoge : int;
+}}}
+
+  * スクリプトに変数を加えると、インスペクター上でその変数の値を操作できるようになる。
+  * インスペクター上に露出したくない変数はprivate定義する。
+
+{{{
+private var hogehoge : int;
+}}}
+
 = トランスフォームの制御 =
 
   * トランスフォームとは「変換」「変形」の意。
