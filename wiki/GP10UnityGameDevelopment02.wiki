@@ -85,6 +85,10 @@ function OnGUI() {
 
 = 2D描画 =
 
+  * 画像ファイルをProjectビューにドラッグ＆ドロップして素材を追加。
+  * スクリプトでは{{{Texture2D}}}クラスを使って受け取る。
+  * 表示には{{{GUI.DrawTexture}}}を使う。
+
 {{{
 var titleTexture : Texture2D;
 
