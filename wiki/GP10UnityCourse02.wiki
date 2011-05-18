@@ -193,6 +193,12 @@ function Update () {
 
 [http://dl.dropbox.com/u/14572092/VgaUnity/PoppingBox.html 手本]と同じものを作成する。
 
+=== 提出ディレクトリ ===
+
+{{{
+\\G-Server\Public\GP\Unity\Middleware0518b
+}}}
+
 === ヒント ===
 
   * 絶対値とサイン波の組み合わせ。
