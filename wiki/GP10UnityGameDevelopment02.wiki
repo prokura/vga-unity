@@ -122,6 +122,8 @@ function Update () {
 }
 }}}
 
+  * {{{FromToRotation}}}について。
+
 = 開閉する障害物を作ってみる =
 
   * Cubeを配置。
