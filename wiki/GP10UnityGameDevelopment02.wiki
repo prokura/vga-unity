@@ -234,4 +234,10 @@ function CloseDoor() {
 
 = 課題の提出 =
 
+  * Web Player形式でビルドしたものを、以下のディレクトリに格納する。
+
+{{{
+\\G-Server\Public\GP\Unity\PS3_0518
+}}}
+
   * 次回の始めに回収。
