@@ -30,9 +30,42 @@ function Update() {
 
 === プログラムで動かす物体との干渉 ===
 
+  * 大きな床と、小さな床と、箱を作る。箱にはRigidbodyを追加して物理挙動を与える。
+  * 小さな床をスクリプトで動かす。
+
+{{{
+function Update () {
+  transform.position.x = Mathf.Sin(Time.time * 2.1) * 1.5;
+  transform.position.z = Mathf.Sin(Time.time * 1.7) * 1.5;
+  transform.rotation = Quaternion.AngleAxis(Time.time * 30.0, Vector3.up);
+}
+}}}
+
+  * 動作を確認する。
+    * 箱を小さな床の上に落とす配置。
+    * 箱を小さな床の隣に配置。
+
 === Kinematic Rigidbody ===
 
-=== !MoveRotationの使用 ===
+  * 小さな床にRigidbodyコンポーネントを追加する。
+  * Is  Kinematicスイッチをオンにする。
+  * 動作を確認する。
+
+=== {{{MovePosition/Rotation}}}の使用 ===
+
+  * スクリプトを変更する。
+
+{{{
+function FixedUpdate () {
+  var x : float = Mathf.Sin(Time.time * 2.1) * 1.5;
+  var z : float = Mathf.Sin(Time.time * 1.7) * 1.5;
+  rigidbody.MovePosition(Vector3(x, 0.0, z));
+  rigidbody.MoveRotation(Quaternion.AngleAxis(Time.time * 30.0, Vector3.up));
+}
+}}}
+
+  * {{{MovePosition}}}, {{{MoveRotation}}}}とは。
+  * {{{FixedUpdate}}}とは。
 
 = 課題 =
 
