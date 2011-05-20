@@ -1,0 +1,45 @@
+#summary ミドルウェア (3)
+
+= イントロ =
+
+  * 先週のおさらい。
+  * 手本の作り方を一通りレクチャー。
+  * 課題の回収。
+
+= プレハブ =
+
+=== プレハブとは ===
+
+=== プレハブの作り方 ===
+
+=== プレハブのインスタンス化 ===
+
+= プログラムからの使用 =
+
+{{{
+var boxPrefab : GameObject;
+
+function Update() {
+  if (GetButtonDown("Fire1")) {
+    Instantiate(boxPrefab);
+  }
+}
+}}}
+
+= 物理挙動とトランスフォーム =
+
+=== プログラムで動かす物体との干渉 ===
+
+=== Kinematic Rigidbody ===
+
+=== MoveRotation ===
+
+= 課題 =
+
+手本と同じものを作成する。
+
+=== 提出ディレクトリ ===
+
+{{{
+\\G-Server\Public\GP\Unity\Middleware0525
+}}}
