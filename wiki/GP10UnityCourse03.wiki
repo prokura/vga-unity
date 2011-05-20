@@ -32,7 +32,7 @@ function Update() {
 
 === Kinematic Rigidbody ===
 
-=== MoveRotation ===
+=== !MoveRotationの使用 ===
 
 = 課題 =
 
