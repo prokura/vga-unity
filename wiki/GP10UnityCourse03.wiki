@@ -69,10 +69,14 @@ function FixedUpdate () {
 
 = 課題 =
 
-手本と同じものを作成する。
+[http://dl.dropbox.com/u/14572092/VgaUnity/Pusher.html 手本]と同じものを作成する。
 
 === 提出ディレクトリ ===
 
 {{{
 \\G-Server\Public\GP\Unity\Middleware0525
 }}}
+
+=== 余力があれば ===
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/Pusher2.html 手本その２]
