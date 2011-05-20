@@ -60,7 +60,7 @@ function Update () {
 
 = 変数の定義 =
 
-  * UnityのJavaScriptで変数を定義するには{{{var 変数名 : 型;}}}
+  * Unityの!JavaScriptで変数を定義するには{{{var 変数名 : 型;}}}
 
 {{{
 var hogehoge : int;
