@@ -65,29 +65,46 @@
   * FenceオブジェクトをFenceレイヤーに設定する。
   * BulletオブジェクトをBulletレイヤーに設定する。
 
-= ゲームコントローラーの作成 =
+= スコアの表示 =
 
-  * GameControllerスクリプトを作成。
-  * 空のゲームオブジェクトを作成し、GameControllerスクリプトを与える。
-  * ゲームオブジェクトのタグをGameControllerに設定する。
+  * 空のゲームオブジェクトを作成し、名前を!GameControllerとする。
+  * タグを!GameControllerに設定する。
 
+  * Scorekeeperスクリプトを作成し、!GameControllerオブジェクトに追加する。
+  * BoxからGameControllerに向かってメッセージングする部分を作る。
+  * とりあえず赤だけ点数を加えるようにする。
 
+  * スキンを作成する。
+  * Scorekeeperの表示部でスキンを使用するよう改造する。
 
-GameControllerを作る。
-Scoreを作る。[static]
-箱が壊れたときのメッセージングを行う。
-とりあえず青だけ得点。
+= 色切り替えへの対応 =
 
-交互にターゲット色を変えるようにする。
+  * Refereeスクリプトを作成し、!GameControllerオブジェクトに追加する。
+  * !GetComponentを使ってScorekeeperと連携する部分を作る。
+  * Scorekeeper側の実験コードは削除する。
 
-Timekeeperを作る
-TimeUpメッセージを作る。
-ResultScreenを作る。
+= 制限時間を設ける =
 
-GameStarterを作る。
+  * Timekeeperスクリプトを作成し、!GameControllerオブジェクトに追加する。
+  * !TimeUpメッセージの送信部分を作る。
+    * Spawnerを!GameControllerの子にする。
 
-TitleScreenを作る。
+= 結果表示部分を作る =
 
-FlickerEffectを作る。
-音を組み込む。
-（効果音、UI）
+  * !ResultScreenスクリプトを作成し、!GameControllerオブジェクトに追加する。
+    * !TimeUpメッセージを受信して処理を開始する。
+    * 開始時disable状態にする。
+
+= カウントダウンを作る =
+
+  * !ResultScreenスクリプトを作成し、!GameControllerオブジェクトに追加する。
+  * !StartGameメッセージの送信部分を作る。
+  * RefereeとSpawnerは開始時disable状態にする。!StartGameで開始するように変更する。
+
+= タイトル画面を作る =
+
+  * Mainシーンの複製でTitleシーンを作る。
+
+=  演出を強化する =
+  * FlickerEffectを作る。
+  * 音を組み込む。
