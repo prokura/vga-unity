@@ -90,8 +90,24 @@ function ApplyDamage () {
 
 = 箱の壊れ方の改良 =
 
-  * !deathTimerの導入。自滅のタイミングを遅延させる。
   * 爆発のパーティクルエフェクトを作ってみる。
+
+{{{
+- Min Sizeを3に変更。
+- Max Sizeを5に変更。
+- Min EnergyとMax Energyを0.5に変更。
+- Min EmissionとMax Emissionを30に変更
+- Rnd VelocityのX, Y, Zをすべて25に変更。
+- Emitter Velocity Scaleを0.1に変更。
+- Rnd Angular Velocityを360に変更。
+- Rnd Rotationをオン。
+- One Shotをオン。
+- Dampingを0.01に変更。
+}}}
+
+  * マテリアルのシェーダーはParticlesのAdditive (soft)を選択。
+
+  * !deathTimerの導入。自滅のタイミングを遅延させる。
 
 = 箱の自動生成 =
 
