@@ -70,6 +70,9 @@ function FixedUpdate () {
 
 = プログラムからの使用 =
 
+  * メニューのGame ObjectからCreate Emptyで空のゲームオブジェクトを作成する。
+  * 空のゲームオブジェクトにスクリプトを与える。
+
 {{{
 var boxPrefab : GameObject;
 
@@ -80,7 +83,20 @@ function Update() {
 }
 }}}
 
-  * インスペクター上に露出したboxPrefabにプレハブをドラッグ＆ドロップする。
+  * インスペクター上に露出した{{{boxPrefab}}}にプレハブをドラッグ＆ドロップする。
+  * ボタンを押すごとにインスタンスが生成される。
+
+  * インスタンス化を行う際に、位置と回転を指定することもできる。
+
+{{{
+var boxPrefab : GameObject;
+
+function Update() {
+  if (GetButtonDown("Fire1")) {
+    Instantiate(boxPrefab, transform.position, transform.rotation);
+  }
+}
+}}}
 
 = 課題 =
 
