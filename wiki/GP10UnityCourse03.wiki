@@ -77,7 +77,7 @@ function FixedUpdate () {
 var boxPrefab : GameObject;
 
 function Update() {
-  if (GetButtonDown("Fire1")) {
+  if (Input.GetButtonDown("Fire1")) {
     Instantiate(boxPrefab);
   }
 }
