@@ -16,9 +16,8 @@
 
   * 箱を作る。
   * Boxタグを与える。
-  * マテリアルと物理マテリアルの設定。Rigidbodyの付加。
+  * マテリアルの設定。Rigidbodyの付加。
   * Red BoxとBlue Boxを作って、それぞれプレハブ化。
-
 
 = 弾丸 =
 
@@ -44,7 +43,8 @@ function Update () {
 		                transform.rotation);
 		bullet.rigidbody.velocity.z = 60.0;
 	}
-}}}}
+}
+}}}
 
   * クリックした位置へ飛ばすように改造。
 
@@ -55,6 +55,15 @@ function Update () {
   * Bulletスクリプトを弾丸に追加する。
   * 衝突時に相手と自分をDestroyする。
   * タグ判定を追加する。
+
+{{{
+function OnCollisionEnter (collisionInfo : Collision) {
+	if (collisionInfo.gameObject.tag == "Box") {
+		Destroy(collisionInfo.gameObject);
+	}
+	Destroy(gameObject);
+}
+}}}
 
 = メッセージングによるダメージ伝達 =
 
