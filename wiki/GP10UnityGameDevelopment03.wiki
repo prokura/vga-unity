@@ -225,6 +225,23 @@ function Update () {
   * スキンを作成する。
   * Scorekeeperの表示部でスキンを使用するよう改造する。
 
+{{{
+var skin : GUISkin;
+
+private var score : int;
+
+function OnBoxDestroyed () {
+	score += 10;
+}
+
+function OnGUI () {
+	GUI.skin = skin;
+	GUI.Label(Rect(0, 0, 100, 100),
+	          "Score: " + score.ToString(),
+	          "score");
+}
+}}}
+
 = 色切り替えへの対応 =
 
   * Refereeスクリプトを作成し、!GameControllerオブジェクトに追加する。
