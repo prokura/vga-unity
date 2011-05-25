@@ -359,3 +359,13 @@ function TimeUp() {
 =  演出を強化する =
   * !FlickerEffectを作る。
   * 音を組み込む。
+
+= 制作物の提出 =
+
+Web Player形式でビルドしたものを、以下のディレクトリに格納する。
+
+{{{
+\\G-Server\Public\GP\Unity\PS3_0525
+}}}
+
+次回の始めに回収。
