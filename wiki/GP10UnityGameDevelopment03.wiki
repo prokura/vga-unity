@@ -259,6 +259,37 @@ function OnGUI () {
 = 色切り替えへの対応 =
 
   * Refereeスクリプトを作成し、!GameControllerオブジェクトに追加する。
+
+{{{
+var skin : GUISkin;
+
+var switchInterval : float;
+
+private var targetIsRed : boolean;
+private var switchTimer : float;
+
+function Start () {
+	targetIsRed = true;
+	switchTimer = switchInterval;
+}
+
+function Update () {
+	switchTimer -= Time.deltaTime;
+	if (switchTimer <= 0.0) {
+		targetIsRed = !targetIsRed;
+		switchTimer = switchInterval;
+	}
+}
+
+function OnGUI () {
+	GUI.skin = skin;
+	GUI.Label(Rect(0, 0, Screen.width, Screen.height),
+	          targetIsRed ? "RED!!" : "BLUE!!",
+	          "message");
+}
+}}}
+
+
   * !GetComponentを使ってScorekeeperと連携する部分を作る。
   * Scorekeeper側の実験コードは削除する。
 
