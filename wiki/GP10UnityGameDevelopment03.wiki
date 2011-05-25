@@ -103,9 +103,21 @@ function ApplyDamage () {
 - Rnd Rotationをオン。
 - One Shotをオン。
 - Dampingを0.01に変更。
+- Autodestructをオン。
 }}}
 
   * マテリアルのシェーダーはParticlesのAdditive (soft)を選択。
+
+{{{
+var explosionPrefab : GameObject;
+
+function ApplyDamage () {
+	Instantiate(explosionPrefab,
+	            transform.position,
+	            transform.rotation);
+	Destroy(gameObject);
+}
+}}}
 
   * !deathTimerの導入。自滅のタイミングを遅延させる。
 
