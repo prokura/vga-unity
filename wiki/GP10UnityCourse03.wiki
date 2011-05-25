@@ -33,11 +33,9 @@ function Update () {
 
   * 小さな床にRigidbodyコンポーネントを追加する。
   * Is  Kinematicスイッチをオンにする。
-  * 動作を確認する。
-
-=== {{{MovePosition/Rotation}}}の使用 ===
-
   * スクリプトを変更する。
+    * {{{Update}}}の代わりに{{{FixedUpdate}}}を使う。
+    * transformを直接アクセスするのではなく、{{{MovePosition}}}, {{{MoveRotation}}}を使う。
 
 {{{
 function FixedUpdate () {
@@ -48,8 +46,7 @@ function FixedUpdate () {
 }
 }}}
 
-  * {{{MovePosition}}}, {{{MoveRotation}}}とは。
-  * {{{FixedUpdate}}}とは。
+  * [http://dl.dropbox.com/u/14572092/VgaUnity/Platform3.html 動作確認する。]
 
 = プレハブ =
 
