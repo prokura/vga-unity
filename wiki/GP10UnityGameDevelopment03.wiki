@@ -69,7 +69,24 @@ function OnCollisionEnter (collisionInfo : Collision) {
 
   * Boxスクリプトを箱プレハブに追加する。
   * Bulletスクリプト内の衝突処理で、相手をDestroyするのではなく、!ApplyDamageメッセージを飛ばすようにする。
+
+{{{
+function OnCollisionEnter (collisionInfo : Collision) {
+	if (collisionInfo.gameObject.tag == "Box") {
+		collisionInfo.gameObject.SendMessage("ApplyDamage");
+	}
+	Destroy(gameObject);
+}
+}}}
+
   * Boxスクリプト側の!ApplyDamage内で自滅するようにする。
+
+{{{
+function ApplyDamage () {
+	Destroy(gameObject);
+}
+}}}
+
 
 = 箱の壊れ方の改良 =
 
