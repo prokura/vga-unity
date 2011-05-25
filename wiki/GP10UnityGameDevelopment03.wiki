@@ -317,8 +317,28 @@ function OnBoxDestroyed (colorName : String) {
 = 制限時間を設ける =
 
   * Timekeeperスクリプトを作成し、!GameControllerオブジェクトに追加する。
-  * !TimeUpメッセージの送信部分を作る。
-    * Spawnerを!GameControllerの子にする。
+
+{{{
+var gameLength : float;
+
+function Update () {
+	gameLength -= Time.deltaTime;
+	if (gameLength <= 0.0) {
+		gameObject.BroadcastMessage("TimeUp");
+		GameObject.FindWithTag("MainCamera").SendMessage("TimeUp");
+		enabled = false;
+	}
+}
+}}}
+  
+  * GeneratorをGameControllerの子どもの構造にする。
+  * !TimeUpメッセージを受信する処理をGun, Generator, Refereeのそれぞれに追加する。
+
+{{{
+function TimeUp() {
+    enabled = false;
+}
+}}}
 
 = 結果表示部分を作る =
 
