@@ -308,6 +308,11 @@ function OnBoxDestroyed (colorName : String) {
 }}}
 
   * Scorekeeper側の実験コードは削除する。
+  * 表示の色が切り替わるようにする。
+
+{{{
+	GUI.color = targetIsRed ? Color.red : Color.blue;
+}}}
 
 = 制限時間を設ける =
 
