@@ -48,6 +48,29 @@ function Update () {
 
   * クリックした位置へ飛ばすように改造。
 
+{{{
+var bulletPrefab : GameObject;
+
+function Update () {
+	if (Input.GetButtonDown("Fire1")) {
+		var bullet : GameObject = 
+			Instantiate(bulletPrefab,
+		                transform.position,
+		                transform.rotation);
+		
+		var screenPoint : Vector3 = Input.mousePosition;
+		screenPoint.z = 10.0;
+		var worldPoint : Vector3 =
+		    camera.ScreenToWorldPoint(screenPoint);
+		    
+		var dirVector : Vector3 = (worldPoint - transform.position);
+		dirVector.Normalize();
+		                
+		bullet.rigidbody.velocity = dirVector * 60.0;
+	}
+}
+}}}
+
   * 箱と弾丸のmassを調整する。
 
 = 当たり判定 =
