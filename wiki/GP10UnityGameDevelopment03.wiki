@@ -177,7 +177,31 @@ function Update () {
   * Spawnerスクリプトを作る。
   * 空のオブジェクトを作りSpawnerスクリプトを与える。
   * 一定時間毎に交互に箱のインスタンス化を行う。
-  * 箱の総数にリミットを設ける。
+
+{{{
+var redBoxPrefab : GameObject;
+var blueBoxPrefab : GameObject;
+var spawnInterval : float;
+
+private var nextIsRed : boolean;
+private var spawnTimer : float;
+
+function Start () {
+	nextIsRed = true;
+	spawnTimer = spawnInterval;
+}
+
+function Update () {
+	spawnTimer -= Time.deltaTime;
+	if (spawnTimer <= 0.0) {
+		Instantiate(nextIsRed ? redBoxPrefab : blueBoxPrefab,
+		            transform.position,
+		            transform.rotation);
+		nextIsRed = !nextIsRed;
+		spawnTimer = spawnInterval;
+	}
+}
+}}}
 
 = フェンスを作る =
 
