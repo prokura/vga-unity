@@ -291,6 +291,22 @@ function OnGUI () {
 
 
   * !GetComponentを使ってScorekeeperと連携する部分を作る。
+
+{{{
+function OnBoxDestroyed (colorName : String) {
+	var keeper : Scorekeeper = GetComponent(Scorekeeper);
+
+	var targetColorName : String =
+	    targetIsRed ? "Red" : "Blue";
+
+	if (colorName == targetColorName) {
+		keeper.score += 10;
+	} else {
+		keeper.score -= 10;
+	}
+}
+}}}
+
   * Scorekeeper側の実験コードは削除する。
 
 = 制限時間を設ける =
