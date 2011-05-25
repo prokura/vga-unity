@@ -22,8 +22,8 @@ function Update () {
 }}}
 
   * 動作を確認する。
-    * 箱を小さな床の上に落とす配置。
-    * 箱を小さな床の隣に配置。
+    * [http://dl.dropbox.com/u/14572092/VgaUnity/Platform1.html 箱を小さな床の上に落とす配置。]
+    * [http://dl.dropbox.com/u/14572092/VgaUnity/Platform2.html 箱を小さな床の隣に配置。]
 
   * 問題点。
     * 箱は床の動きに従ってくれない。
