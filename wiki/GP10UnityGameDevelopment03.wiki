@@ -19,6 +19,7 @@
   * マテリアルと物理マテリアルの設定。Rigidbodyの付加。
   * Red BoxとBlue Boxを作って、それぞれプレハブ化。
 
+
 = 弾丸 =
 
   * 弾丸を作る。
@@ -31,6 +32,20 @@
     * Fire1ボタンで弾丸をインスタンス化。
     * とりあえず前方向に速度を与えてみる。
   * カメラにGunスクリプトを与える。
+
+{{{
+var bulletPrefab : GameObject;
+
+function Update () {
+	if (Input.GetButtonDown("Fire1")) {
+		var bullet : GameObject = 
+			Instantiate(bulletPrefab,
+		                transform.position,
+		                transform.rotation);
+		bullet.rigidbody.velocity.z = 60.0;
+	}
+}}}}
+
   * クリックした位置へ飛ばすように改造。
 
   * 箱と弾丸のmassを調整する。
