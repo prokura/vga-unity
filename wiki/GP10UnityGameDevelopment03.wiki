@@ -142,7 +142,35 @@ function ApplyDamage () {
 }
 }}}
 
-  * !deathTimerの導入。自滅のタイミングを遅延させる。
+  * killTimerの導入。自滅のタイミングを遅延させる。
+
+{{{
+var explosionPrefab : GameObject;
+
+private var damagedFlag : boolean;
+private var killTimer : float;
+
+function ApplyDamage () {
+	if (!damagedFlag) {
+		rigidbody.AddForce(Vector3.up * 8.0,
+		                   ForceMode.Impulse);
+		damagedFlag = true;
+		killTimer = 0.5;
+	}
+}
+
+function Update () {
+	if (damagedFlag) {
+		killTimer -= Time.deltaTime;
+		if (killTimer <= 0.0) {
+			Instantiate(explosionPrefab,
+			            transform.position,
+			            transform.rotation);
+			Destroy(gameObject);
+		}
+	}
+}
+}}}
 
 = 箱の自動生成 =
 
