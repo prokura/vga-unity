@@ -220,7 +220,21 @@ function Update () {
 
   * Scorekeeperスクリプトを作成し、!GameControllerオブジェクトに追加する。
   * BoxからGameControllerに向かってメッセージングする部分を作る。
-  * とりあえず赤だけ点数を加えるようにする。
+
+{{{
+function Update () {
+	if (damagedFlag) {
+		killTimer -= Time.deltaTime;
+		if (killTimer <= 0.0) {
+			GameObject.FindWithTag("GameController").SendMessage("OnBoxDestroyed");
+			Instantiate(explosionPrefab,
+			            transform.position,
+			            transform.rotation);
+			Destroy(gameObject);
+		}
+	}
+}
+}}}
 
   * スキンを作成する。
   * Scorekeeperの表示部でスキンを使用するよう改造する。
