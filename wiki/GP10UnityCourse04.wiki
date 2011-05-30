@@ -101,7 +101,7 @@ function Start() {
   * !VelocityChangeは速度の変化量を直接指定するモード。
   * Impulseと似ているが、相手の重さの影響を受けない。
 
-= Constraintを使う =
+= Constraintsを使う =
 
   * Constraintとは「拘束」の意。
   * Rigidbodyのプロパティの中にある。
@@ -128,11 +128,17 @@ function Update() {
 
   * Sphereを一旦消して、Capsuleに入れ替えてみる。
   * とりあえず動かしてみる。
-  * Constraintを使って回転のX軸とZ軸を拘束してみる。
+  * Constraintsを使って回転のX軸とZ軸を拘束してみる。
+  * Constraintsを使って位置のZ軸を拘束してみる。
 
 = 課題 =
 
 [http://dl.dropbox.com/u/14572092/VgaUnity/Force1.html 手本]と同じものを作成する。
+
+  * キー入力でカプセルを移動。
+  * スペースキーでジャンプ。
+  * Kinematicな回転する床。
+  * 一定間隔で跳ねる箱。この箱はカプセルで押すことができる。
 
 来週の授業開始時に回収。
 
