@@ -99,3 +99,19 @@ function Start() {
 
   * !VelocityChangeは速度の変化量を直接指定するモード。
   * Impulseと似ているが、相手の重さの影響を受けない。
+
+= 課題 =
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/Force1.html 手本]と同じものを作成する。
+
+来週の授業開始時に回収。
+
+=== 提出ディレクトリ ===
+
+{{{
+\\G-Server\Public\GP\Unity\Middleware0601
+}}}
+
+=== 余力があれば ===
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/Force2.html 手本その２]
