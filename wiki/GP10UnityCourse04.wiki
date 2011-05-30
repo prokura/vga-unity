@@ -33,6 +33,27 @@ function Update() {
 
   * ジョイパッドを持っていれば、ジョイパッドを試してみる。
 
+=== ボタン入力 ===
+
+  * {{{Input.GetButton}}}により、ボタンを押している状態を取得することができる。
+  * 引数にボタンの名前("Fire1", "Fire2", "Fire3", "Jump")を指定する。
+  * キーボードの場合は、それぞれ左CTRL、左ALT、左CMD、スペース、に対応している。
+
+  * 押した瞬間を検出するには{{{Input.GetButtonDown}}}を使う。
+  * 離した瞬間を検出するには{{{Input.GetButtonUp}}}を使う。
+
+=== ボタン入力の視覚化 ===
+
+  * スクリプトに以下の文を追加する。
+
+{{{
+    var scale : float = Input.GetButton("Jump") ? 3.0 : 1.0;
+    transform.localScale = Vector3(scale, scale, scale);
+}}}
+
+  * ボタン名を変えてみる。
+  * {{{GetButtonDown}}}や{{{GetButtonUp}}}も試してみる。
+
 = Rigidbodyと力 =
 
   * {{{AddForce}}}関数により、Rigidbodyに力を加えることができる。
@@ -74,7 +95,7 @@ function Start() {
   * Accelerationは加速度を直接指定するモード。
   * Forceと似ているが、相手の重さの影響を受けない。
 
-=== VelocityChange ===
+=== !VelocityChange ===
 
-  * VelocityChangeは速度の変化量を直接指定するモード。
+  * !VelocityChangeは速度の変化量を直接指定するモード。
   * Impulseと似ているが、相手の重さの影響を受けない。
