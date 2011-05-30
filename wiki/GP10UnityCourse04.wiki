@@ -1,0 +1,31 @@
+#summary ミドルウェア (4)
+
+= イントロ =
+
+  * 先週のおさらい。
+  * 手本の作り方を一通りレクチャー。
+  * 課題の回収。
+
+= キー入力 =
+
+=== ジョイスティック入力 ===
+
+  * {{{Input.GetAxis}}}により、ジョイスティックの軸の傾きを取得することができる。
+  * 引数に軸の名前("Horizontal", "Vertical")を指定する。
+  * 値は-1.0〜+1.0の間の値で返される。
+
+  * ジョイスティックが無い場合はキー入力で代替される。
+  * ジョイパッド、キー入力の場合は、滑らかに値が変化する（擬似的なジョイスティック入力）。
+
+=== ジョイスティック入力の視覚化 ===
+
+  * 適当な大きさの箱と、光源を配置する。
+  * 箱にスクリプトを与える。
+
+{{{
+function Update() {
+    transform.rotation =
+      Quaternion.AngleAxis(Vector3.forward, Input.GetAxis("Horizontal") * 45.0) *
+      Quaternion.AngleAxis(Vector3.right, Input.GetAxis("Vertical") * 45.0));
+}
+}}}
