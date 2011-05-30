@@ -103,7 +103,32 @@ function Start() {
 
 = Constraintを使う =
 
+  * Constraintとは「拘束」の意。
+  * Rigidbodyのプロパティの中にある。
+  * Rigidbodyの動きや回転を、特定の軸に関して制限することができる。
+  * 傾けたくないRigidbodyや、2Dゲームに利用する。
 
+=== キー入力による動き ===
+
+  * 適当な広さの床を作る。
+  * 光源を配置する。
+  * 床の上にSphereを置く。
+  * Sphereにスクリプトを与える。
+
+{{{
+function Update() {
+    var move : Vector3 =
+      Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+    move = move.normalized * 8.0;
+    rigidbody.AddForce(move, ForceMode.Force);
+}
+}}}
+
+=== Capsule形状への置き換え ===
+
+  * Sphereを一旦消して、Capsuleに入れ替えてみる。
+  * とりあえず動かしてみる。
+  * Constraintを使って回転のX軸とZ軸を拘束してみる。
 
 = 課題 =
 
