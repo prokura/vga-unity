@@ -16,6 +16,7 @@
 
   * ジョイスティックが無い場合はキー入力で代替される。
   * ジョイパッド、キー入力の場合は、滑らかに値が変化する（擬似的なジョイスティック入力）。
+  * この辺りの挙動の設定はEdit→Project Settings→Inputの中にある。
 
 === ジョイスティック入力の視覚化 ===
 
@@ -25,7 +26,9 @@
 {{{
 function Update() {
     transform.rotation =
-      Quaternion.AngleAxis(Vector3.forward, Input.GetAxis("Horizontal") * 45.0) *
-      Quaternion.AngleAxis(Vector3.right, Input.GetAxis("Vertical") * 45.0));
+      Quaternion.AngleAxis(Input.GetAxis("Horizontal") * -45.0, Vector3.forward) *
+      Quaternion.AngleAxis(Input.GetAxis("Vertical") * 45.0, Vector3.right);
 }
 }}}
+
+  * ジョイパッドを持っていれば、ジョイパッドを試してみる。
