@@ -32,3 +32,49 @@ function Update() {
 }}}
 
   * ジョイパッドを持っていれば、ジョイパッドを試してみる。
+
+= Rigidbodyと力 =
+
+  * {{{AddForce}}}関数により、Rigidbodyに力を加えることができる。
+  * 第一引数にベクトルを与える。加える力の向きと大きさを表す。
+  * 第二引数に力を加えるモードを指定する（後述）。
+
+=== セットアップ ===
+
+  * 適当な広さの床を作る。
+  * 光源を配置する。
+  * 床の上に箱を置く。
+  * 箱にスクリプトを与える。
+
+=== Forceモード ===
+
+{{{
+function Update() {
+    rigidbody.AddForce(Vector3.right * 10.0, ForceMode.Force);
+}
+}}}
+
+  * Forceは持続的に発生する力を与えるモード。
+  * 物理学では「力」。時間あたりの運動量の変化を表す。
+
+=== Impulseモード ===
+
+{{{
+function Start() {
+    yield WaitForSeconds(2.0);
+    rigidbody.AddForce(Vector3.right * 20.0, ForceMode.Impulse);
+}
+}}}
+
+  * Impulseは瞬間的に発生する力を与えるモード。
+  * 物理学では「力積」。運動量の変化を表す。
+
+=== Acceleration ===
+
+  * Accelerationは加速度を直接指定するモード。
+  * Forceと似ているが、相手の重さの影響を受けない。
+
+=== VelocityChange ===
+
+  * VelocityChangeは速度の変化量を直接指定するモード。
+  * Impulseと似ているが、相手の重さの影響を受けない。
