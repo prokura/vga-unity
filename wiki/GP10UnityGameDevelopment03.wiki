@@ -357,6 +357,7 @@ function TimeUp() {
   * Mainシーンの複製でTitleシーンを作る。
 
 =  演出を強化する =
+
   * !FlickerEffectを作る。
   * 音を組み込む。
 
