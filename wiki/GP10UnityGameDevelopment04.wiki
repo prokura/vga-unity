@@ -1,0 +1,11 @@
+#summary Unityゲーム開発 (4)
+
+= イントロ =
+
+  * 先週の制作物の提出。
+
+= 先週の題材について =
+
+  * [https://github.com/keijiro/unity-blockshooter]からダウンロードできる。
+    * 右側にある"Downloads"ボタンをクリック。
+  * [http://keijiro.github.com/unity-blockshooter]でプレイできる。
