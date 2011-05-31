@@ -9,3 +9,14 @@
   * [https://github.com/keijiro/unity-blockshooter]からダウンロードできる。
     * 右側にある"Downloads"ボタンをクリック。
   * [http://keijiro.github.com/unity-blockshooter]でプレイできる。
+
+  * GitとGitHubについて。
+  * バージョン管理システムについて。
+  * 興味がある人はSubversionを使ってみるとよい。
+
+= 今週の題材について =
+
+  * [https://github.com/keijiro/achilles]からダウンロードできる。
+  * [http://keijiro.github.com/achilles]でプレイできる。
+
+  * 今回は同時進行での制作は無し。プロジェクトの構造を解説する。
