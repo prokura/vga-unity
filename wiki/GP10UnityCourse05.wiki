@@ -187,3 +187,9 @@ function OnGUI() {
     * Fixed Width, Fixed Height -  0以外の値を設定すると、要素の幅・高さが固定になる。
     * Font Size - フォントの大きさ。
     * Stretch Width, Stretch Height - オンにすると、幅や高さがフレキシブルにある。
+
+= フォント =
+
+  * TrueTypeフォントなら何でも使える。
+  * 使いたいTrueTypeフォントをProjectビューにドラッグ＆ドロップするだけ。
+  * スキンに設定することで使用できる。
