@@ -190,6 +190,28 @@ function OnGUI() {
 
 = フォント =
 
-  * TrueTypeフォントなら何でも使える。
-  * 使いたいTrueTypeフォントをProjectビューにドラッグ＆ドロップするだけ。
+  * !TrueTypeフォントなら何でも使える。
+  * 使いたい!TrueTypeフォントをProjectビューにドラッグ＆ドロップするだけ。
   * スキンに設定することで使用できる。
+
+= 課題 =
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/GUICannon.html 手本]と同じものを作成する。
+
+来週の授業開始時に回収。
+
+=== 提出ディレクトリ ===
+
+{{{
+\\G-Server\Public\GP\Unity\Middleware0608
+}}}
+
+=== ヒント ===
+
+弾を射出する部分。
+
+{{{
+    var pos : Vector3 = transform.position;
+    var dir : Vector3 = transform.up;
+    var bullet : GameObject = Instantiate(bulletPrefab, pos + dir * 2.0, Quaternion.identity);
+}}}
