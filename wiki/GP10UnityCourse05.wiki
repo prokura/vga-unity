@@ -131,4 +131,22 @@ function OnGUI() {
 
 === 固定スペース ===
 
-  * 固定スペースを入れるには{{{FixedSpace}}}を使う。
+  * 固定スペースを入れるには{{{Space}}}を使う。
+
+  * ボタンを中央に寄せたうえで、ボタンの間に固定スペースを挿入する。
+
+{{{
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 1");
+    GUILayout.Space(10);
+    GUILayout.Button("Button 2");
+    GUILayout.Space(10);
+    GUILayout.Button("Button 3");
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+}}}
