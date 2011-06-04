@@ -63,23 +63,71 @@ function OnGUI() {
 
 {{{
 function OnGUI() {
-	GUILayout.BeginArea(Rect(0, 0, 300, 300));
-	GUILayout.BeginVertical();
-	GUILayout.Label("Label 1");
-	GUILayout.Label("Label 2");
-	GUILayout.Label("Label 3");
-	GUILayout.Label("Label 4");
-	GUILayout.EndVertical();
-	GUILayout.EndArea();
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.Button("Button 1");
+    GUILayout.Button("Button 2");
+    GUILayout.Button("Button 3");
+    GUILayout.Button("Button 4");
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
 }
 }}}
 === 横配置 ===
 
-  * 縦に要素を並べるには{{{BeginVertical}}}を使う。
+  * 横に要素を並べるには{{{BeginHorizontal}}}を使う。
+  * 並べる要素の終わりに{{{EndHorizontal}}}を置く。
+
+{{{
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginHorizontal();
+    GUILayout.Button("Button 1");
+    GUILayout.Button("Button 2");
+    GUILayout.Button("Button 3");
+    GUILayout.Button("Button 4");
+    GUILayout.EndHorizontal();
+    GUILayout.EndArea();
+}
+}}}
 
 === 可変スペース ===
 
   * 可変スペースを入れるには{{{FlexibleSpace}}}を使う。
+
+  * ボタンを中央に寄せる。
+
+{{{
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 1");
+    GUILayout.Button("Button 2");
+    GUILayout.Button("Button 3");
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+}}}
+
+  * ボタン間隔を均等に空ける。
+
+{{{
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 1");
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 2");
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 3");
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+}}}
 
 === 固定スペース ===
 
