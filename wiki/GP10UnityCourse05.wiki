@@ -49,17 +49,17 @@ function OnGUI() {
 }
 }}}
 
-= GUILayout =
+= {{{GUILayout}}} =
 
   * 配置を自動的に行うための仕組み。
   * {{{GUI}}}クラスの代わりに{{{GUILayout}}}を使う。
   * 引数はほぼ同じ。ただし、第一引数の表示領域は省略する。
-
   * {{{BeginArea}}}で自動配置を開始する。第一引数には、配置に使う領域を指定する。
+
+=== 縦配置 ===
+
   * 縦に要素を並べるには{{{BeginVertical}}}を使う。
-  * 横に要素を並べるには{{{BeginHorizontal}}}を使う。
-  * 可変スペースを入れるには{{{FlexibleSpace}}}を使う。
-  * 固定スペースを入れるには{{{FixedSpace}}}を使う。
+  * 並べる要素の終わりに{{{EndVertical}}}を置く。
 
 {{{
 function OnGUI() {
@@ -73,3 +73,14 @@ function OnGUI() {
 	GUILayout.EndArea();
 }
 }}}
+=== 横配置 ===
+
+  * 縦に要素を並べるには{{{BeginVertical}}}を使う。
+
+=== 可変スペース ===
+
+  * 可変スペースを入れるには{{{FlexibleSpace}}}を使う。
+
+=== 固定スペース ===
+
+  * 固定スペースを入れるには{{{FixedSpace}}}を使う。
