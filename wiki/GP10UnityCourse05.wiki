@@ -154,3 +154,36 @@ function OnGUI() {
 = 日本語を使う =
 
   * スクリプトファイルのエンコーディングをUTF-16に変更すれば、普通に日本語も使える。
+
+= スキン =
+
+  * GUIの見た目を入れ替えるための仕組み。
+  * ProjectビューのCreateメニューの"GUI Skin"から作成する。
+  * スクリプト側では{{{Skin}}}型の変数を使って受け取り、{{{GUI.skin}}}に代入することで適用する。
+
+{{{
+var skin : GUISkin;
+function OnGUI() {
+    GUI.skin = skin;
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.Label("Label あいうえお");
+    GUILayout.Button("Button あいうえお");
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+}}}
+
+=== スキンの設定方法 ===
+
+  * Boxなら"Box"の、Labelなら"Label"の、というように、それぞれのGUI要素に同名の項目が存在する。
+  * 主な項目。
+    * Normal - 通常時の表示に使われる背景と文字色の設定。
+    * Padding - 要素の内側のスペース幅。
+    * Margin - 要素の外側のスペース幅。
+    * Font - 文字の描画に使うフォント。
+    * Alignment - 「左寄せ」や「中央寄せ」など、位置揃えの指定。
+    * Word Wrap - 自動改行。
+    * Fixed Width, Fixed Height -  0以外の値を設定すると、要素の幅・高さが固定になる。
+    * Font Size - フォントの大きさ。
+    * Stretch Width, Stretch Height - オンにすると、幅や高さがフレキシブルにある。
