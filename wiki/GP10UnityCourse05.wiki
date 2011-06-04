@@ -1,0 +1,75 @@
+#summary ミドルウェア (5)
+
+= イントロ =
+
+  * 先週のおさらい。
+  * 手本の作り方をレクチャー。
+  * 課題の回収。
+
+= GUI =
+
+  * ボタンやラベルなど、一般的なユーザーインターフェースを扱うための仕組み。
+  * {{{OnGUI}}}関数の中でのみ使うことができる。
+
+=== ラベル ===
+
+  * 単に文字を表示する。
+  * 第一引数に表示領域を指定。第二引数に表示する文字列を指定。
+
+{{{
+function OnGUI() {
+    GUI.Label(Rect(10, 10, 100, 40), "Hello, world!");
+}
+}}}
+
+=== ボタン ===
+
+  * ボタンが押された瞬間にtrueを返す。
+  * 第一引数にボタンの表示領域を指定。第二引数にボタンのラベルを指定。
+
+{{{
+function OnGUI() {
+    if (GUI.Button(Rect(10, 10, 100, 40), "Push this!")) {
+        Debug.Log("Hello!");
+    }
+}
+}}}
+
+=== スライダー ===
+
+   * floatの値を扱うための仕組み。
+   * 引数は、表示領域、現在の値、最小値、最大値、の順に指定する。
+
+{{{
+var value : float;
+
+function OnGUI() {
+	value = GUI.HorizontalSlider(Rect(10, 10, 100, 40), value, 0, 100);
+	GUI.Label(Rect(120, 10, 100, 40), value.ToString());
+}
+}}}
+
+= GUILayout =
+
+  * 配置を自動的に行うための仕組み。
+  * {{{GUI}}}クラスの代わりに{{{GUILayout}}}を使う。
+  * 引数はほぼ同じ。ただし、第一引数の表示領域は省略する。
+
+  * {{{BeginArea}}}で自動配置を開始する。第一引数には、配置に使う領域を指定する。
+  * 縦に要素を並べるには{{{BeginVertical}}}を使う。
+  * 横に要素を並べるには{{{BeginHorizontal}}}を使う。
+  * 可変スペースを入れるには{{{FlexibleSpace}}}を使う。
+  * 固定スペースを入れるには{{{FixedSpace}}}を使う。
+
+{{{
+function OnGUI() {
+	GUILayout.BeginArea(Rect(0, 0, 300, 300));
+	GUILayout.BeginVertical();
+	GUILayout.Label("Label 1");
+	GUILayout.Label("Label 2");
+	GUILayout.Label("Label 3");
+	GUILayout.Label("Label 4");
+	GUILayout.EndVertical();
+	GUILayout.EndArea();
+}
+}}}
