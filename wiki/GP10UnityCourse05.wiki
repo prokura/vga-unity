@@ -244,7 +244,8 @@ function OnGUI() {
 
 === ヒント ===
 
-弾を射出する部分。
+  * とりあえずGUIの見た目は雑でもいいので、GUIに連動した動きや、弾を射出する部分を先に作ろう。
+  * 弾を射出する部分はこんな感じ。
 
 {{{
     var pos : Vector3 = transform.position;
