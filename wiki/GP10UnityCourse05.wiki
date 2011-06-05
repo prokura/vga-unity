@@ -151,6 +151,42 @@ function OnGUI() {
 }
 }}}
 
+= 複雑な配置 =
+
+  * {{{BeginHorizontal}}}, {{{BeginVertical}}}, {{{FlexibleSpace}}}などを組み合わせることによって、凝った配置を自動的に行うことができる。
+  * 現在の画面の幅・高さは{{{Screen.width}}}, {{{Screen.height}}}から取得することができる。配置に使う領域を算出するのに使うとよい。
+
+  * {{{GUILayout}}}系の関数では、引数の最後に{{{GUILayoutOption}}}を渡すことにより、配置のされかたを微調整することができる。{{{GUILayoutOption}}}については[http://unity3d.com/support/documentation/ScriptReference/GUILayoutOption.html こちら]。
+  * 次の例では、{{{GUILayout.Width}}}を使ってラベルの幅を明示的に指定している。
+
+{{{
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, Screen.width, Screen.height));
+
+    GUILayout.BeginHorizontal();
+    GUILayout.FlexibleSpace();
+
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+
+    GUILayout.Label("TITLE", GUILayout.Width(100));
+    GUILayout.Space(10);
+    GUILayout.Button("Button 1");
+    GUILayout.Space(5);
+    GUILayout.Button("Button 2");
+    GUILayout.Space(5);
+    GUILayout.Button("Button 3");
+
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+
+    GUILayout.FlexibleSpace();
+    GUILayout.EndHorizontal();
+
+    GUILayout.EndArea();
+}
+}}}
+
 = 日本語を使う =
 
   * スクリプトファイルのエンコーディングをUTF-16に変更すれば、普通に日本語も使える。
