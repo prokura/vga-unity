@@ -141,3 +141,10 @@ http://en.wikipedia.org/wiki/Cube_mapping
   * Baseで下地となるテクスチャを設定することもできる。アルファ値で反射成分の割合を操作。
 
   * 反射とバンプの組み合わせなど、かなりどぎつい表現になる。
+
+= テクスチャの細かな設定 =
+
+  * Filtering
+  * Compression
+  * Mipmap
+  * Anisotropic filtering
