@@ -113,8 +113,25 @@ http://en.wikipedia.org/wiki/Cube_mapping
   * ここでは、シリンダー型のパノラマ画像から変換する方法を使う。
 
   * シリンダー型のパノラマ画像は、パノラマ画像を自作する人の間でよく使われている。
-  * 正式名称は正距円筒図法(equirectangular projection)。
+  * 正式名称は[http://ja.wikipedia.org/wiki/正距円筒図法 正距円筒図法](equirectangular projection)。
   * フリーで使えるものが入手しやすい。例えば[http://www.flickr.com/search/?q=equirectangular&l=cc&ss=0&ct=0&mt=all&w=all&adv=1 flickrで検索する]など。
 
   * まず、Projectビューにドラッグ＆ドロップで普通に取り込み。
   * Texture Typeを"Reflection"にする。Mappingは"Cylindrical"にする。
+
+= RenderFX/Skybox Cubed =
+
+  * キューブマップを背景にするためのシェーダー。
+  * Cubemapにキューブマップを設定する。Tint Colorで色の調整。
+  * メインメニューの"Edit"→"Render Settings"でRender Settingsを開く。その中にあるSkybox Materialに、このマテリアルをドラッグ＆ドロップする。
+
+= Reflective （反射） =
+
+  * 反射による映り込みを表現する。いわゆる環境マッピング。
+  * メニューの"Reflective"の下にバリエーションが用意されている。例えば"Reflective/Diffuse"なら、Diffuseをベースとして反射するマテリアルになる。
+
+  * Reflection Cubemapに映り込みのためのキューブマップを設定する。
+  * Baseで下地となるテクスチャを設定することもできる。アルファ値で反射成分の割合を操作。
+
+  * 反射とバンプの組み合わせなど、かなりどぎつい表現になる。
+
