@@ -95,3 +95,26 @@ ProjectビューのCreateメニューからMaterialを選ぶ。
   * Heightmapにハイトマップを与える必要がある。
   * 法線マップを作るのに使ったハイトマップをそのまま与えればよい。ただし、高さの値をアルファチャンネルに入れる必要がある。これには、Texture Importerにある"Generate Alpha from Greyscale"を使うとよい。
 
+= Cubemap （キューブマップ） =
+
+http://en.wikipedia.org/wiki/Cube_mapping
+
+  * 環境マッピングに使われるマッピング方式の一種。
+   * 環境マッピングとは、反射による映り込みを表現するための手法。物体の周囲の景色を画像化したもの。
+  * 物体の周囲の景色を箱状に写し取る。6面の画像によって構成される。
+
+  * 環境マッピングの方式には、他にも色々ある。例えばスフィアマップとか……
+  * http://ict.debevec.org/~debevec/Probes/
+  * 最近ではグラフィクスチップがキューブマップに対応しているため、もっぱらキューブマップが使われるようになっている。
+
+=== Unityでキューブマップを作るには ===
+
+  * 6枚の画像からキューブマップを構築する方法と、他の形式から変換する方法と、二通りある。
+  * ここでは、シリンダー型のパノラマ画像から変換する方法を使う。
+
+  * シリンダー型のパノラマ画像は、パノラマ画像を自作する人の間でよく使われている。
+  * 正式名称は正距円筒図法(equirectangular projection)。
+  * フリーで使えるものが入手しやすい。例えば[http://www.flickr.com/search/?q=equirectangular&l=cc&ss=0&ct=0&mt=all&w=all&adv=1 flickrで検索する]など。
+
+  * まず、Projectビューにドラッグ＆ドロップで普通に取り込み。
+  * Texture Typeを"Reflection"にする。Mappingは"Cylindrical"にする。
