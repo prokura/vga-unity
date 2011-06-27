@@ -13,9 +13,9 @@
 
 == !OnCollisionEnter ==
 
-衝突が発生した瞬間を検出するには、関数OnCollisionEnterを定義する。
+衝突が発生した瞬間を検出するには、関数!OnCollisionEnterを定義する。
 
-スクリプトCollisionTestに次の関数を追加する。
+スクリプト!CollisionTestに次の関数を追加する。
 
 {{{
 function OnCollisionEnter(info : Collision) {
@@ -107,13 +107,13 @@ function OnCollisionEnter(info : Collision) {
 
 「タグ」(tag)は、ゲームオブジェクトに任意の文字列を与えて管理するための仕組み。
 
-YouTubeとかニコ動とかの「タグ」みたいなもの。ゲームオブジェクトを分類するのに便利。ただし、Unityでは、各ゲームオブジェクトに対してひとつしかタグを与えることができない。
+!YouTubeとかニコ動とかの「タグ」みたいなもの。ゲームオブジェクトを分類するのに便利。ただし、Unityでは、各ゲームオブジェクトに対してひとつしかタグを与えることができない。
 
 ゲームオブジェクトにタグを与えるには、ゲームオブジェクトを選択したときにInspectorの上部分に表示される"Tag"というラベルの付いたドロップダウンを使う。
 
 Unityにはプリセットのタグがいくつか用意されているが、自分で定義することもできる。ドロップダウンの中にある"Add Tag..."を選択すると、Tag Managerが開く。いちばん上にある"Tags"という項目をクリックして開くと、タグのリストが出現する。そこで自由に追加できる。
 
-設定したタグは、GameObjectクラスのtagプロパティから取得できる。例えば、コリジョン検出の中で次のようにして使える。
+設定したタグは、!GameObjectクラスのtagプロパティから取得できる。例えば、コリジョン検出の中で次のようにして使える。
 
 {{{
 function OnCollisionEnter(info : Collision) {
