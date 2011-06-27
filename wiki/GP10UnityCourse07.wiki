@@ -142,3 +142,16 @@ function OnCollisionEnter(info : Collision) {
 === Destroyに関する注意 ===
 
 Destroy関数は、そのゲームオブジェクトを即時に破棄するわけではなく、少し後（今フレームと次フレームの間）に破棄する。そのため、Destroyを読んだ直後から、相手が完全に消えてることを前提とするような処理を書くと、不具合の原因になることがある。
+
+
+= 課題 =
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/CollisionBasic.html 手本]と同じものを作成する。
+
+来週の授業開始時に回収。
+
+=== 提出ディレクトリ ===
+
+{{{
+\\G-Server\Public\GP\Unity\Middleware0627
+}}}
