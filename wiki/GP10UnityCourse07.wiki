@@ -176,7 +176,7 @@ Randomクラスには、その他にも、ランダムな回転を生成する�
 === 提出ディレクトリ ===
 
 {{{
-\\G-Server\Public\GP\Unity\Middleware0627
+\\G-Server\Public\GP\Unity\Middleware0629
 }}}
 
 === ヒント ===
