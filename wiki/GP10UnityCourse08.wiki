@@ -22,6 +22,47 @@ Colliderコンポーネント（Cubeであれば"Box Collider"、Sphereであれ
 
 == トリガーの接触検出 ==
 
+=== 接触始め - !OnTriggerEnter ===
+
+トリガーに物体が接触したことを検出するには!OnTriggerEnter関数を実装する。この辺りはコリジョン検出に似ている。
+
+スクリプト!TriggerTestを新規作成し、障害物のトリガーにドラッグ＆ドロップする。スクリプトの中身は次のようにする。
+
+{{{
+function OnTriggerEnter(other : Collider) {
+    Debug.Log("Enter!");
+}
+}}}
+
+コンソールウィンドウを前に出してから、動作確認する。接触した瞬間に"Enter!"と出力されれば成功。
+
+=== 接触終わり - !OnTriggerExit ===
+
+トリガーから物体が抜け出ていった（接触が終わった）ことを検出するには!OnTriggerExit関数を実装する。
+
+スクリプト!TriggerTestに次の関数を追加する。
+
+{{{
+function OnTriggerExit(other : Collider) {
+    Debug.Log("Exit!");
+}
+}}}
+
+動作確認する。ボールが障害物をすり抜けた後に"Exit!"と出力されれば成功。
+
+=== 接触中 - !OnTriggerStay ===
+
+物体がトリガーに触れている間、1フレーム毎に!OnTriggerStay関数が呼ばれる。
+
+スクリプト!TriggerTestに次の関数を追加する。
+
+{{{
+function OnTriggerStay(other : Collider) {
+    Debug.Log("Stay!");
+}
+}}}
+
+動作確認する。
 
 
 
