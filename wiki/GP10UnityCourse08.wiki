@@ -2,21 +2,9 @@
 
 = トリガー =
 
-|| ||C||R||K||CT||RT||KT||
-||C|| ||Y|| || || || ||
-||R||Y||Y||Y|| || || ||
-||K|| ||Y|| || || || ||
-||CT|| || || || || || ||
-||RT|| || || || || || ||
-||KT|| || || || || || ||
+http://lh6.googleusercontent.com/-Z1egV0nwf-k/ThGNnKG4sdI/AAAAAAAAHGI/KypymgkzUZo/s800/Collision%252520Action%252520Matrix%2525201.png
 
-
-||Collider|| ||Y|| || || || ||
-||Rigidbody||Y||Y||Y|| || || ||
-||Kinematic|| ||Y|| || || || ||
-||Collider + Trigger|| || || || || || ||
-||Rigidbody + Trigger|| || || || || || ||
-||Kinematic + Trigger|| || || || || || ||
+http://lh6.googleusercontent.com/-Gg40EUJmBxA/ThGNnD4kgoI/AAAAAAAAHGM/CdREOFgZDFs/s800/Collision%252520Action%252520Matrix%2525202.png
 
 = 課題 =
 
