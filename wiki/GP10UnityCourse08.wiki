@@ -2,6 +2,29 @@
 
 = トリガー =
 
+Unityの「トリガー」(Trigger)は、自動ドアのセンサーのようなものを実現するための仕組み。当たり判定は行いたいが、物体としての存在は無い（物理挙動に干渉しない）、という場合に使う。
+
+Unityでは「トリガー」と呼ばれるが、他のゲームエンジン（物理エンジン）では、「センサー」(Sensor)とか「ファントム」(Pahtom)とか呼ばれることもある。現場によって名前がバラバラ。
+
+== 準備 ==
+
+  * Cubeで床を作る。
+  * 適当に光源を置く。
+  * Sphereでボールを作る。Rigidbodyを与えて、床の上に落とすようにする。
+  * 床を少し傾けて、床の上をボールが転がるようにする。
+  * ボールが転がる先にCubeで障害物を作る。
+
+== トリガーの作り方 ==
+
+Colliderコンポーネント（Cubeであれば"Box Collider"、Sphereであれば"Sphere Collider"）にある"Is Trigger"のスイッチをONにする。
+
+上で準備したシーンで、障害物のColliderコンポーネントのIs Triggerをオンにしてみる。すると、ボールが障害物を通過するようになる。
+
+== トリガーの接触検出 ==
+
+
+
+
 http://lh6.googleusercontent.com/-Z1egV0nwf-k/ThGNnKG4sdI/AAAAAAAAHGI/KypymgkzUZo/s800/Collision%252520Action%252520Matrix%2525201.png
 
 http://lh6.googleusercontent.com/-Gg40EUJmBxA/ThGNnD4kgoI/AAAAAAAAHGM/CdREOFgZDFs/s800/Collision%252520Action%252520Matrix%2525202.png
