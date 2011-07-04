@@ -1,0 +1,30 @@
+#summary ミドルウェア (8)
+
+= トリガー =
+
+= 課題 =
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/TriggerBasic.html 手本]と同じものを作成する。
+
+余裕があれば、[http://dl.dropbox.com/u/14572092/VgaUnity/TriggerAdvanced.html もうちょっと凝ったもの]を作ってみる。
+
+来週の授業開始時に回収。
+
+=== 提出ディレクトリ ===
+
+{{{
+\\G-Server\Public\GP\Unity\Middleware0706
+}}}
+
+=== ヒント ===
+
+マウスカーソルの位置にゲームオブジェクトを動かすには、次のようなスクリプトを使う。
+
+{{{
+function Update () {
+    var screenPoint = Input.mousePosition;
+    screenPoint.z = -camera.main.transform.position.z;
+    var worldPoint = camera.main.ScreenToWorldPoint(screenPoint);
+    transform.position = worldPoint;
+}
+}}}
