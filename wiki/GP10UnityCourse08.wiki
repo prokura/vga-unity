@@ -2,6 +2,22 @@
 
 = トリガー =
 
+|| ||C||R||K||CT||RT||KT||
+||C|| ||Y|| || || || ||
+||R||Y||Y||Y|| || || ||
+||K|| ||Y|| || || || ||
+||CT|| || || || || || ||
+||RT|| || || || || || ||
+||KT|| || || || || || ||
+
+
+||Collider|| ||Y|| || || || ||
+||Rigidbody||Y||Y||Y|| || || ||
+||Kinematic|| ||Y|| || || || ||
+||Collider + Trigger|| || || || || || ||
+||Rigidbody + Trigger|| || || || || || ||
+||Kinematic + Trigger|| || || || || || ||
+
 = 課題 =
 
 [http://dl.dropbox.com/u/14572092/VgaUnity/TriggerBasic.html 手本]と同じものを作成する。
