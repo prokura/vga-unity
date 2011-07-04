@@ -110,13 +110,25 @@ function OnTriggerEnter(other : Collider) {
 
 Rigidbodyの速度ベクトルを正規化することにより、単位方向ベクトルを得る。その方向へと一定量加速する。
 
+= コリジョン（当たり判定）の発生ルール =
 
+!OnCollision系関数や!OnTrigger系関数は、コンポーネントの組み合わせによっては呼ばれないことがある。言葉で表すと、次のようになる。
 
+ 「!OnCollision系関数は、少なくともどちらか一方が非KinematicなRigidbodyを持つ場合に呼ばれる。トリガーに対しては一切呼ばれない。」
 
+ 「!OnTrigger系関数は、少なくともどちらか一方がRigidbodyを持ち、少なくともどちらか一方のColliderがトリガーになっている場合に呼ばれる」
+
+表に直すと、次のようになる。
+
+=== コリジョンの発生する組み合わせ（!OnCollision系関数） ===
 
 http://lh6.googleusercontent.com/-Z1egV0nwf-k/ThGNnKG4sdI/AAAAAAAAHGI/KypymgkzUZo/s800/Collision%252520Action%252520Matrix%2525201.png
 
+=== トリガーの発動する組み合わせ（!OnTrigger系関数） ===
+
 http://lh6.googleusercontent.com/-Gg40EUJmBxA/ThGNnD4kgoI/AAAAAAAAHGM/CdREOFgZDFs/s800/Collision%252520Action%252520Matrix%2525202.png
+
+トリガー同士でトリガーを発動したい場合には、トリガーにKinematicなRigidbodyを付けるという、ちょっと特殊な設定を行う必要がある。
 
 = 課題 =
 
