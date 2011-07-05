@@ -144,8 +144,8 @@ http://http.developer.nvidia.com/GPUGems3/gpugems3_ch33.html
 
 「離散」の方が処理が軽いが、高速で動く物体が他の物体をすり抜けてしまう可能性がある。Unityではデフォルトで「離散」が使用される設定になっている。
 
-  * [http://dl.dropbox.com/u/14572092/VgaUnity/CCD1.html 例1 - 高速で動く物体が壁をすり抜ける。]
-  * [http://dl.dropbox.com/u/14572092/VgaUnity/CCD2.html 例2 - スクリプトによって動かしているKinematic Rigidbodyが物体をすり抜ける。]
+  * [http://dl.dropbox.com/u/14572092/VgaUnity/PhysicsCaveat1.html 例1 - 高速で動く物体が壁をすり抜ける。]
+  * [http://dl.dropbox.com/u/14572092/VgaUnity/PhysicsCaveat2.html 例2 - スクリプトによって動かしているKinematic Rigidbodyが物体をすり抜ける。]
 
 この「すり抜け」を対処するには、物体の速度を落とすとか、物体の厚みを増やすとか、何らかの手段によって物体を当たりやすくする必要がある。
 
@@ -156,6 +156,20 @@ http://http.developer.nvidia.com/GPUGems3/gpugems3_ch33.html
 *Collision DetectionをContinuous Dynamicにすると* - 静止しているMesh Colliderに加えて、ContinuousあるいはContinuous Dynamicが設定されている動的なRigidbodyに対しても、連続コリジョン判定が使われるようになる。
 
 いずれの場合もスクリプトで動かしているKinematic Rigidbodyに対しては離散のままなので、注意すること。
+
+== スリープ ==
+
+物理エンジンにはほぼ間違いなく搭載されている機能。ほぼ停止したRigidbodyの物理挙動を切ることによって、処理負荷の軽減を図るというもの。
+
+「ほぼ停止した」と判定される基準は、Physics Managerの中の設定にある（メインメニューEdit→Project Settings→Physics）。速度がSleep Velocity以下になり、なおかつ角速度がSleep Angular Velocityとなったとき、「ほぼ停止した」と判断される。
+
+スリープ状態に入ると、物理挙動が働かなくなるほか、一部の機能が使えなくなる（例えば!OnCollisionStayが呼ばれなくなる、など）。動いている物体が触れたり、!AddForceされたりすると、自動的にスリープが解除されるため、普段はあまり問題無い。
+
+スリープの解除が自動的に行われない例外のひとつとして、重力の変化がある。例えば、重力を変更することで物体を動かそうとしても、スリープ状態にある物体は動いてくれない。
+
+  * [http://dl.dropbox.com/u/14572092/VgaUnity/PhysicsCaveat3.html スリープと重力変化を確認するサンプル。]
+
+キー操作で重力を変更する。スリープに入ったボールは赤色に変化する。いったんスリープしてしまったボールは、キー操作の影響を受けなくなってしまうが、カプセルに触れると復帰する。カプセルは毎フレーム!WakeUp関数を呼ぶことによってスリープを防いでいる。
 
 = 課題 =
 
