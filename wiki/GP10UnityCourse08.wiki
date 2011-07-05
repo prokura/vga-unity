@@ -130,6 +130,24 @@ http://lh6.googleusercontent.com/-Gg40EUJmBxA/ThGNnD4kgoI/AAAAAAAAHGM/CdREOFgZDF
 
 トリガー同士でトリガーを発動したい場合には、トリガーにKinematicなRigidbodyを付けるという、ちょっと特殊な設定を行う必要がある。
 
+= 物理エンジン補足 =
+
+== 離散(discrete)コリジョン判定と、連続(continuous)コリジョン判定 ==
+
+コリジョン判定には2種類の方式がある。離散的なアプローチの「離散コリジョン判定」(discrete collision detection)と、連続的なアプローチの「連続コリジョン判定」(continuous collision detection)。
+
+「離散」の方は、一定時間毎の点で判定を行う。「連続」の方は、一定時間の動きを繋いで判定を行う。下の図が分かりやすい。
+
+http://http.developer.nvidia.com/GPUGems3/elementLinks/33fig02.jpg
+
+http://http.developer.nvidia.com/GPUGems3/gpugems3_ch33.html
+
+「離散」の方が処理が軽いが、高速で動く物体が他の物体をすり抜けてしまう可能性がある。Unityではデフォルトで「離散」が使用される設定になっている。
+
+  * [http://dl.dropbox.com/u/14572092/VgaUnity/CCD1.html 例1 - 高速で動く物体が壁をすり抜ける。]
+  * [http://dl.dropbox.com/u/14572092/VgaUnity/CCD2.html 例2 - スクリプトによって動かしているKinematic Rigidbodyが物体をすり抜ける。]
+
+
 = 課題 =
 
 [http://dl.dropbox.com/u/14572092/VgaUnity/TriggerBasic.html 手本]と同じものを作成する。
