@@ -147,6 +147,15 @@ http://http.developer.nvidia.com/GPUGems3/gpugems3_ch33.html
   * [http://dl.dropbox.com/u/14572092/VgaUnity/CCD1.html 例1 - 高速で動く物体が壁をすり抜ける。]
   * [http://dl.dropbox.com/u/14572092/VgaUnity/CCD2.html 例2 - スクリプトによって動かしているKinematic Rigidbodyが物体をすり抜ける。]
 
+この「すり抜け」を対処するには、物体の速度を落とすとか、物体の厚みを増やすとか、何らかの手段によって物体を当たりやすくする必要がある。
+
+特定の条件下においては、Unityでも連続コリジョン判定を使うことができる。Rigidbodyコンポーネントの設定の中にある"Collision Detection"を"Continuous"か"Continuous Dynamic"に変更する。
+
+*Collision DetectionをContinuousにすると* - 静止しているMesh Colliderに対してのみ連続コリジョン判定が使われるようになる。3Dモデルとして作られた地形モデルに対するコリジョン判定だけを厳密化しよう、というもの。
+
+*Collision DetectionをContinuous Dynamicにすると* - 静止しているMesh Colliderに加えて、ContinuousあるいはContinuous Dynamicが設定されている動的なRigidbodyに対しても、連続コリジョン判定が使われるようになる。
+
+いずれの場合もスクリプトで動かしているKinematic Rigidbodyに対しては離散のままなので、注意すること。
 
 = 課題 =
 
