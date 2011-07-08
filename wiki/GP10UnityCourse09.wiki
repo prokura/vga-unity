@@ -1,3 +1,5 @@
 #summary ミドルウェア (9)
 
 = モデルデータの使用 =
+
+[http://vga-unity.googlecode.com/files/VantanKun.zip モデルデータ (VantanKun.zip)]
