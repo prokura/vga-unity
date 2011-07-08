@@ -6,10 +6,8 @@ Unityは色々な3Dツールのデータ形式に対応しているが、迷っ�
 
   * [http://vga-unity.googlecode.com/files/VantanKun.zip サンプルデータ(VantanKun.zip)]をダウンロードして解凍しておく。
 
-サンプルデータの中にはモデルデータ(VantanKun.fbx)とテクスチャデータ(VantanKun.png)が入っている。
+サンプルデータの中にはモデルデータ(!VantanKun.fbx)とテクスチャデータ(!VantanKun.png)が入っている。
 
 データを取り込むには、Projectビューにドラッグ＆ドロップするだけ。
 
-  * VantanKun.fbxとVantanKun.pngをProjectビューにドラッグ＆ドロップする。
-
-
+  * !VantanKun.fbxと!VantanKun.pngをProjectビューにドラッグ＆ドロップする。
