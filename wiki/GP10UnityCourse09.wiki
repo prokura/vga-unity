@@ -56,6 +56,8 @@ Projectビューの中で、モデルデータ!VantanKunは階層を持ってい
 
 == アニメーションの制御 ==
 
+=== 単純に再生してみる ===
+
 アニメーションの再生をスクリプトから制御するにはanimationプロパティを使う。
 
   * スクリプト!AnimtionTestを新規作成する。
@@ -74,3 +76,38 @@ function Start() {
   * 動作確認する。
 
 歩きアニメーションが3秒間再生されて、そのあと挨拶アニメーションに変化する。
+
+=== インタラクティブに制御してみる ===
+
+とりあえず、キー入力されている間、歩きアニメーションが再生されるようにしてみる。
+
+  * スクリプトの中身を次のようにする。
+
+{{{
+function Update() {
+    if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.5) {
+        animation.Play("Walk");
+    } else {
+        animation.Play("Idle");
+    }
+}
+}}}
+
+Play関数は、アニメーションが既に再生中の場合は何もしないので、こんな感じで毎フレーム呼んでも問題ない。
+
+=== アニメーションの切り替えを滑らかにする ===
+
+Playの代わりに!CrossFadeを使うと、アニメーションの切り替えが滑らかになる。
+
+  * スクリプトの中身を次のようにする。
+
+{{{
+function Update() {
+    if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.5) {
+        animation.CrossFade("Walk");
+    } else {
+        animation.CrossFade("Idle");
+    }
+}
+}}}
+
