@@ -240,3 +240,37 @@ weightの変更はPlayの後に行うのがコツ（Playは常に100%で再生�
 箱が手に付いて動くようになれば成功。
 
 例えば、頭のボーンにTriggerを付ければ、正確に頭部の当たり判定を行うことができる（ヘッドショット判定など……）。
+
+= 課題 =
+
+[http://dl.dropbox.com/u/14572092/VgaUnity/Animation1.html 手本]と同じものを作成する。
+
+ポイントは以下の通り。
+
+  * カーソルキーで左右に動く。
+  * 動いている間はWalkアニメーションが再生される。
+  * 止まっているときはIdleアニメーションが再生される。
+  * 動いている方に向く（できれば滑らかに）。
+  * Fire1ボタンでパンチが出る。
+
+余裕があれば、[http://dl.dropbox.com/u/14572092/VgaUnity/Animation2.html Jumpボタンでジャンプできるようにしてみる]。
+
+来週の授業開始時に回収。
+
+== 提出ディレクトリ ==
+
+{{{
+\\G-Server\Public\GP\Unity\Middleware0713
+}}}
+
+== ヒント ==
+
+移動にはTransform.positionを直接いじればいい。こんな感じ。
+
+{{{
+Transform.position.x += Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+}}}
+
+ジャンプには放物線の数式を使う。
+
+ジャンプから着地した瞬間、着地のインパクトを表現するために、一瞬だけCrouchアニメーションをクロスフェード無しで再生している。
