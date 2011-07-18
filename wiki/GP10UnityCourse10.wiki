@@ -14,7 +14,7 @@ http://vga-unity.googlecode.com/files/VantanKun2.unitypackage
 
   * 床を作る。
   * 適当に光源を置く。
-  * VantanKun2プレハブを適当に配置する。
+  * !VantanKun2プレハブを適当に配置する。
 
 = キャラクターコントローラー (!CharacterController) =
 
@@ -126,8 +126,28 @@ function Update() {
 
 = ラグドール =
 
-ラグドールとは、RigidbodyとJointを組み合わせて作った操り人形のようなもの。物理エンジンを使って、人形を転がすことができる。死体の表現などに便利。
+ラグドールとは、RigidbodyとJointを組み合わせて作ったパペット人形のようなもの。物理エンジンを使って、人形を転がすことができる。死体の表現などに便利。
 
-  * シーンにVantanKun2_Ragdollを配置する。
+  * シーンに!VantanKun2_Ragdollを配置する。
   * 実行して動作を確認する。
   * ラグドールの位置を変えて（壁の上など）、ラグドールの物理挙動を観察する。
+
+== キャラクターの姿勢のコピー ==
+
+動いているキャラクターから滑らかにラグドールへと移行するには、姿勢のコピーを行う必要がある。これはちょっと面倒な処理なので、あらかじめスクリプトを用意しておいた。{{{VantanKun2/Script}}}の中にある!RagdollGeneratorが、それ。
+
+  * シーン中に配置してある!VantanKun2に!RagdollGeneratorスクリプトを追加する。
+  * !RagdollGeneratorスクリプトのパラメーター"Ragdoll Prefab"に!VantanKun2_Ragdollをドラッグ＆ドロップする。
+
+これで準備完了。あとは、!RagdollGenerator内のGenerate関数を呼べば、ラグドールを生成しつつ姿勢をコピーすることができる。
+
+  * スクリプト!CharacterMoveのUpdate関数内に次のコードを追加する。
+
+{{{
+    if (Input.GetButtonDown("Fire1")) {
+        GetComponent("RagdollGenerator").Generate(transform, controller.velocity);
+        Destroy(gameObject);
+    }
+}}}
+
+  * 実行して動作確認する。Fire1キー（左CTRL）でラグドールに移行すれば成功。
