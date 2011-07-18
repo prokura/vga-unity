@@ -22,7 +22,7 @@ http://vga-unity.googlecode.com/files/VantanKun2.unitypackage
 
 物理エンジン的な動きをしなくてもいい場合（プログラムによるダイレクトな制御を行いたい場合）は、キャラクターコントローラー(!CharacterController)を使うとよい。
 
-  * VantanKun2を選択する。
+  * !VantanKun2を選択する。
   * メインメニューのComponent→Physics→Character Controllerを選択する。
   * Inspector上でCharacter Controllerが追加されていることを確認する。
 
