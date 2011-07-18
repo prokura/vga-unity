@@ -6,8 +6,72 @@
 
 http://vga-unity.googlecode.com/files/VantanKun2.unitypackage
 
-このファイル(unitypackage)をインポートするには、メインメニューのAssetsからImport Package→Custom Packageを選択する。すると、Projectビューの中に新たなディレクトリ(VantanKun2)が構築される。
+このファイル(unitypackage)をインポートするには、メインメニューのAssets→Import Package→Custom Packageを選択する。すると、Projectビューの中に新たなディレクトリ(!VantanKun2)が構築される。
 
-ディレクトリの中にあるVantanKun2プレハブが、今回新しくなったキャラクターモデル。VantanKun2_Ragdollは、後半で解説するラグドールを組み込んだもの。
+ディレクトリの中にある!VantanKun2プレハブが、今回新しくなったキャラクターモデル。!VantanKun2_Ragdollは、後半で解説する「ラグドール」を組み込んだもの。
 
-= キャラクターコントローラー =
+= 準備 =
+
+  * 床を作る。
+  * 適当に光源を置く。
+  * VantanKun2プレハブを適当に配置する。
+
+= キャラクターコントローラー (!CharacterController) =
+
+キャラクターモデルとRigidbodyを組み合わせれば、キャラクターの動きを作ることはできるが、余計な慣性がついてしまったり、思いがけない弾みが生まれてしまったりと、不都合が発生することがある。
+
+物理エンジン的な動きをしなくてもいい場合（プログラムによるダイレクトな制御を行いたい場合）は、キャラクターコントローラー(!CharacterController)を使うとよい。
+
+  * VantanKun2を選択する。
+  * メインメニューのComponent→Physics→Character Controllerを選択する。
+  * Inspector上でCharacter Controllerが追加されていることを確認する。
+
+キャラクターコントローラーはカプセル形状のColliderを持っており、これでキャラクターの当たり判定を行う。そのため、このカプセル形状は、キャラクターのだいたいの大きさにフィットしていなくてはいけない。
+
+カプセルの形状は、Height（高さ）、Radius（半径）、Center（中心座標）で調整できる。
+
+  * カプセルの形状を調整して、大まかにキャラクターにフィットさせる。
+
+== 移動のプログラミング ==
+
+キャラクターコントローラーは、地形との当たり判定を自動的に行ってくれるコンポーネント。移動量を決めてMove関数に渡すと、移動してくれる。
+
+  * スクリプト!CharacterMoveを新規作成する。
+  * スクリプトの中身を次のようにする。
+
+{{{
+var walkSpeed : float = 3.0;
+
+private var moveDirection : Vector3;
+
+function Update() {
+    var controller : CharacterController = GetComponent(CharacterController);
+
+    moveDirection = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+    moveDirection *= walkSpeed;
+
+    controller.Move(moveDirection * Time.deltaTime);
+}
+}}}
+
+  * このスクリプト!CharacterMoveを!VantanKun2にドラッグ＆ドロップで追加する。
+  * 実行し、カーソルキーで前後左右に動くことを確認する。
+
+== 見た目の調整 ==
+
+キャラクターのアニメーションや方向の転換は自前で行わなくてはいけない。
+
+  * スクリプト!CharacterMoveに次の処理を加える。
+
+{{{
+    if (moveDirection.magnitude > 0.1) {
+        transform.LookAt(transform.position + moveDirection);
+        animation.CrossFade("Walk");
+    } else {
+        animation.CrossFade("Idle");
+    }
+}}}
+
+  * 実行し、アニメーションの切り替えと方向転換が行われることを確認する。
+
+ここで使っているLookAt関数は、Transformの回転(rotation)を、指定した座標に向くように設定する、というもの。ここでは進行方向の座標を指定することにより、進行方向へとTransformが回転するようにした。
