@@ -74,4 +74,51 @@ function Update() {
 
   * 実行し、アニメーションの切り替えと方向転換が行われることを確認する。
 
-ここで使っているLookAt関数は、Transformの回転(rotation)を、指定した座標に向くように設定する、というもの。ここでは進行方向の座標を指定することにより、進行方向へとTransformが回転するようにした。
+ここで使っている!LookAt関数は、Transformの回転(rotation)を、指定した座標に向くように設定する、というもの。ここでは進行方向の座標を指定することにより、進行方向へとTransformが回転するようにした。
+
+== ジャンプの追加 ==
+
+キャラクターコントローラーでジャンプを実装するのは、いろいろと面倒。しかし落ち着いて実装すれば、それほど難しくない。
+
+重要なのは、キャラクターコントローラーに用意されているプロパティのisGrounded。このプロパティは、キャラクターコントローラーが地面に触れている間のみtrueになる。ジャンプ処理はこれがtrueのときだけ発動できるようにする。
+
+あとは、Y軸の速度変化を自分で管理すること。ジャンプが発動した瞬間に上方向への速度を設定し、その後は重力加速度に従って下方向へ加速していく。
+
+まとめると、次のような処理になる。
+
+{{{
+var walkSpeed : float = 3.0;
+var jumpSpeed : float = 8.0;
+var gravity : float = 20.0;
+
+private var moveDirection : Vector3;
+
+function Update() {
+    var controller : CharacterController = GetComponent(CharacterController);
+
+    if (controller.isGrounded) {
+        moveDirection = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        moveDirection *= walkSpeed;
+        
+        if (Input.GetButtonDown("Jump")) {
+            moveDirection.y = jumpSpeed;
+            animation.Play("Jump");
+        } else {
+            if (moveDirection.magnitude > 0.1) {
+                transform.LookAt(transform.position + moveDirection);
+                animation.CrossFade("Walk");
+            } else {
+                animation.CrossFade("Idle");
+            }
+        }
+    }
+
+    moveDirection.y -= gravity * Time.deltaTime;
+
+    controller.Move(moveDirection * Time.deltaTime);
+}
+}}}
+
+  * 実行し、スペースキーでジャンプすることを確認する。
+
+
