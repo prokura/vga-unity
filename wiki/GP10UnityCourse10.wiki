@@ -1,0 +1,13 @@
+#summary ミドルウェア (10)
+
+= はじめに =
+
+今回の内容に合わせてモデルデータを更新した。次のURLからダウンロードできる。
+
+http://vga-unity.googlecode.com/files/VantanKun2.unitypackage
+
+このファイル(unitypackage)をインポートするには、メインメニューのAssetsからImport Package→Custom Packageを選択する。すると、Projectビューの中に新たなディレクトリ(VantanKun2)が構築される。
+
+ディレクトリの中にあるVantanKun2プレハブが、今回新しくなったキャラクターモデル。VantanKun2_Ragdollは、後半で解説するラグドールを組み込んだもの。
+
+= キャラクターコントローラー =
