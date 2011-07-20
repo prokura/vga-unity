@@ -127,7 +127,9 @@ function Update() {
 
 ラグドールとは、RigidbodyとJointを組み合わせて作ったパペット人形のようなもの。物理エンジンを使って、人形を転がすことができる。死体の表現などに便利。
 
-http://www.ragdollgames1.com/ - Ragdoll Games: ラグドールを使ったFlashゲーム集
+  [http://www.youtube.com/watch?v=FYewODgdI4k  PAIN - ラグドールを使ったPS3タイトル]
+
+  [http://www.ragdollgames1.com/ Ragdoll Games - ラグドールを使ったFlashゲーム集]
 
   * シーンに!VantanKun2_Ragdollを配置する。
   * 実行して動作を確認する。
