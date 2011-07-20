@@ -4,11 +4,11 @@
 
 今回の内容に合わせてモデルデータを更新した。次のURLからダウンロードできる。
 
-http://vga-unity.googlecode.com/files/VantanKun2.unitypackage
+  http://vga-unity.googlecode.com/files/VantanKun2.unitypackage
 
-このファイル(unitypackage)をインポートするには、メインメニューのAssets→Import Package→Custom Packageを選択する。すると、Projectビューの中に新たなディレクトリ(!VantanKun2)が構築される。
+このファイル(unitypackage)をインポートするには、メインメニューからAssets→Import Package→Custom Packageを実行する。ファイルダイアログが表示されるので、!VantanKun2.unitypackageを選択する。すると、Projectビューの中に新たなディレクトリ(!VantanKun2)が構築される。
 
-ディレクトリの中にある!VantanKun2プレハブが、今回新しくなったキャラクターモデル。!VantanKun2_Ragdollは、後半で解説する「ラグドール」を組み込んだもの。
+ディレクトリ!VantanKun2の中には、!VantanKun2プレハブと!VantanKun2_Ragdollプレハブが格納されている。!VantanKun2は更新されたキャラクターモデル。!VantanKun2_Ragdollは、後半で解説する「ラグドール」を組み込んだもの。
 
 = 準備 =
 
@@ -127,6 +127,8 @@ function Update() {
 = ラグドール =
 
 ラグドールとは、RigidbodyとJointを組み合わせて作ったパペット人形のようなもの。物理エンジンを使って、人形を転がすことができる。死体の表現などに便利。
+
+http://www.ragdollgames1.com/ - Ragdoll Games: ラグドールを使ったFlashゲーム集
 
   * シーンに!VantanKun2_Ragdollを配置する。
   * 実行して動作を確認する。
