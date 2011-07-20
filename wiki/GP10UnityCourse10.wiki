@@ -18,43 +18,42 @@
 
 = キャラクターコントローラー (!CharacterController) =
 
-キャラクターモデルとRigidbodyを組み合わせれば、キャラクターの動きを作ることはできるが、余計な慣性がついてしまったり、思いがけない弾みが生まれてしまったりと、不都合が発生することがある。
+キャラクターモデルとRigidbodyを組み合わせれば、キャラクターの動きを作ることはできる（[http://dl.dropbox.com/u/14572092/VgaUnity/Force2.html 過去の作例]）が、余計な慣性がついてしまったり、思いがけない弾みが生まれてしまったりと、不都合が発生することがある。
 
-物理エンジン的な動きをしなくてもいい場合（プログラムによるダイレクトな制御を行いたい場合）は、キャラクターコントローラー(!CharacterController)を使うとよい。
+物理挙動が不要な場合（プログラムによるダイレクトな制御を行いたい場合）は、キャラクターコントローラー(!CharacterController)を使うとよい。
 
   * !VantanKun2を選択する。
-  * メインメニューのComponent→Physics→Character Controllerを選択する。
+  * メインメニューのComponent→Physics→Character Controllerを実行する。
   * Inspector上でCharacter Controllerが追加されていることを確認する。
 
-キャラクターコントローラーはカプセル形状のColliderを持っており、これでキャラクターの当たり判定を行う。そのため、このカプセル形状は、キャラクターのだいたいの大きさにフィットしていなくてはいけない。
+キャラクターコントローラーはカプセル形状のColliderを持っており、これでキャラクターの当たり判定を行う。ゆえにこのカプセル形状は、キャラクターの大きさにフィットしていなくてはいけない。
 
 カプセルの形状は、Height（高さ）、Radius（半径）、Center（中心座標）で調整できる。
 
-  * カプセルの形状を調整して、大まかにキャラクターにフィットさせる。
+  * カプセルの形状を調整して、キャラクターにフィットさせる。
 
 == 移動のプログラミング ==
 
 キャラクターコントローラーは、地形との当たり判定を自動的に行ってくれるコンポーネント。移動量を決めてMove関数に渡すと、移動してくれる。
 
-  * スクリプト!CharacterMoveを新規作成する。
-  * スクリプトの中身を次のようにする。
+  * スクリプト!CharacterMoveを新規作成する。内容は次のとおり。
 
 {{{
 var walkSpeed : float = 3.0;
 
-private var moveDirection : Vector3;
+private var velocity : Vector3;
 
 function Update() {
     var controller : CharacterController = GetComponent(CharacterController);
 
-    moveDirection = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-    moveDirection *= walkSpeed;
+    velocity = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+    velocity *= walkSpeed;
 
-    controller.Move(moveDirection * Time.deltaTime);
+    controller.Move(velocity * Time.deltaTime);
 }
 }}}
 
-  * このスクリプト!CharacterMoveを!VantanKun2にドラッグ＆ドロップで追加する。
+  * このスクリプト!CharacterMoveをシーン上の!VantanKun2にドラッグ＆ドロップで追加する。
   * 実行し、カーソルキーで前後左右に動くことを確認する。
 
   * シーンにCubeを追加し、壁っぽく配置する。
@@ -62,22 +61,22 @@ function Update() {
 
 == 見た目の調整 ==
 
-キャラクターのアニメーションや方向の転換は自前で行わなくてはいけない。
+キャラクターの回転やアニメーションは自前で制御しなければならない。
 
   * スクリプト!CharacterMoveに次の処理を加える。
 
 {{{
-    if (moveDirection.magnitude > 0.1) {
-        transform.LookAt(transform.position + moveDirection);
+    if (velocity.magnitude > 0.1) {
+        transform.LookAt(transform.position + velocity);
         animation.CrossFade("Walk");
     } else {
         animation.CrossFade("Idle");
     }
 }}}
 
-  * 実行し、アニメーションの切り替えと方向転換が行われることを確認する。
+  * 実行し、方向の回転とアニメーションの切り替えが行われることを確認する。
 
-ここで使っている!LookAt関数は、Transformの回転(rotation)を、指定した座標に向くように設定する、というもの。ここでは進行方向の座標を指定することにより、進行方向へとTransformが回転するようにした。
+ここで使っている!LookAt関数は、Transformの回転(rotation)を、指定した座標に向くよう設定する、というもの。ここでは進行方向の先にある座標を指定することにより、進行方向へとTransformが回転するようにした。
 
 == ジャンプの追加 ==
 
@@ -94,21 +93,21 @@ var walkSpeed : float = 3.0;
 var jumpSpeed : float = 8.0;
 var gravity : float = 20.0;
 
-private var moveDirection : Vector3;
+private var velocity : Vector3;
 
 function Update() {
     var controller : CharacterController = GetComponent(CharacterController);
 
     if (controller.isGrounded) {
-        moveDirection = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        moveDirection *= walkSpeed;
+        velocity = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        velocity *= walkSpeed;
         
         if (Input.GetButtonDown("Jump")) {
-            moveDirection.y = jumpSpeed;
+            velocity.y = jumpSpeed;
             animation.Play("Jump");
         } else {
-            if (moveDirection.magnitude > 0.1) {
-                transform.LookAt(transform.position + moveDirection);
+            if (velocity.magnitude > 0.1) {
+                transform.LookAt(transform.position + velocity);
                 animation.CrossFade("Walk");
             } else {
                 animation.CrossFade("Idle");
@@ -116,9 +115,9 @@ function Update() {
         }
     }
 
-    moveDirection.y -= gravity * Time.deltaTime;
+    velocity.y -= gravity * Time.deltaTime;
 
-    controller.Move(moveDirection * Time.deltaTime);
+    controller.Move(velocity * Time.deltaTime);
 }
 }}}
 
