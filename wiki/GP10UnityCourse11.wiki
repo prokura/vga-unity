@@ -16,7 +16,7 @@ Unityには統合的なTerrainエディタが搭載されている。これを�
 
 Asset Storeから[http://u3d.as/content/unity-technologies/terrain-assets/1qQ Terrain Assets]をダウンロード＆インポートしておく（授業ではG-Serverに置いておきます）。
 
-
+Terrainの上を走らすためのクルマのプレハブを用意しておいた。[http://vga-unity.googlecode.com/files/HMMWV.unitypackage ここからダウンロードして]インポートしておく。
 
 = Terrainを作る =
 
