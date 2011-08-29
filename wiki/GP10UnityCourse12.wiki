@@ -130,6 +130,51 @@ function StopUpdate() {
 }
 }}}
 
-= メッセージングの引数 =
+== メッセージングの引数 ==
 
-= 自分自身との連携 =
+今回は使わなかったが、メッセージには引数をひとつだけ添えることができる。
+
+例えば、受け側では次のようにして、
+
+{{{
+function StopUpdate(flag : boolean) {
+    stopFlag = flag;
+}
+}}}
+
+送信側では次のようにする。
+
+{{{
+other.gameObject.SendMessage("StopUpdate", true);
+}}}
+
+== 自分自身との連携 ==
+
+コンポーネントへの直接アクセスやメッセージングは、ゲームオブジェクト間の連携だけでなく、同じゲームオブジェクト内での連携にも使うことができる。
+
+例えば、Box1スクリプトを次のようにすれば、開始から0.5秒後に自ら点滅を止めることができる。
+
+{{{
+function Start() {
+	yield WaitForSeconds(0.5);
+
+	var flicker : Flicker = GetComponent(Flicker);
+	flicker.StopUpdate();
+	
+	yield WaitForSeconds(1.5);
+	rigidbody.velocity = Vector3(-12, 0, 0);
+}
+}}}
+
+あるいは、次のようにメッセージングを用いても実現できる。
+
+{{{
+function Start() {
+	yield WaitForSeconds(0.5);
+
+	gameObject.SendMessage("StopUpdate");
+	
+	yield WaitForSeconds(1.5);
+	rigidbody.velocity = Vector3(-12, 0, 0);
+}
+}}}
