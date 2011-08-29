@@ -72,23 +72,49 @@ function OnTriggerEnter(other : Collider) {
 }
 }}}
 
-{{{
-function OnTriggerEnter(other : Collider) {
-	other.SendMessage("StopUpdate");
-}
-}}}
+= 方法その２・メッセージングによる連携 =
+
+コンポーネントへの直接アクセスは、呼び出し側（今回の例では{{{Wall}}}スクリプト）が複雑になるという欠点がある。もし、連携相手のコンポーネントが10種類とか20種類になったら？
+
+Unityでは、連携相手のコンポーネントを特定せずに、関数を呼び出す方法がある。これはメッセージングと呼ばれる。
+
+メッセージングを使って相手の関数を呼び出すには、{{{SendMessage}}}関数を使う。第一引数には、呼び出す対象の関数名を渡す。
 
 {{{
 function OnTriggerEnter(other : Collider) {
-	other.SendMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
+	other.gameObject.SendMessage("StopUpdate");
 }
 }}}
 
+これで、相手が何のコンポーネントを持つか特定することなく、{{{StopUpdate}}}を呼び出すことができる。
+
+=== 厳密な書き方 ===
+
+{{{SendMessage}}}関数は、相手のゲームオブジェクトに呼び出し対象の関数が存在しなかった場合、エラーとなる。そのため、前出の例は、{{{StopUpdate}}}をどこにも持たないゲームオブジェクトがWallに触れた場合、エラーを発生させてしまう。
+
+相手のゲームオブジェクトに呼び出し対象の関数が存在しない可能性がある場合は、引数に{{{SendMessageOptions.DontRequireReceiver}}}を渡す。これを渡すと、エラーチェックが行われなくなる。
+
 {{{
 function OnTriggerEnter(other : Collider) {
-	other.BroadcastMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
+	other.gameObject.SendMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
 }
 }}}
+
+== メッセージのブロードキャスト ==
+
+{{{Flicker}}}と{{{Blinker}}}だけでなく{{{Spinner}}}も止めたい……となった場合、少し面倒なことになる。相手に階層構造があったら、その子供まで調べてメッセージングしなくてはならない。
+
+これを簡単に解決する手段として*ブロードキャスト*が用意されている。ブロードキャストを使うと、相手のゲームオブジェクトだけでなく、その階層構造の下にあるゲームオブジェクト全てに対してメッセージが送信される。
+
+メッセージのブロードキャストを行うには、{{{BroadcastMessage}}}関数を用いる。
+
+{{{
+function OnTriggerEnter(other : Collider) {
+	other.gameObject.BroadcastMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
+}
+}}}
+
+あとは、{{{Spinner}}}スクリプト側で{{{StopUpdate}}}に対応すればよい。
 
 {{{
 private var stopFlag : boolean;
