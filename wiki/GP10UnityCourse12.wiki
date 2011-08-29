@@ -64,3 +64,23 @@ function OnTriggerEnter(other : Collider) {
 	other.SendMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
 }
 }}}
+
+{{{
+function OnTriggerEnter(other : Collider) {
+	other.BroadcastMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
+}
+}}}
+
+{{{
+private var stopFlag : boolean;
+
+function Update() {
+	if (!stopFlag) {
+		transform.localRotation = Quaternion.AngleAxis(800.0 * Time.time, Vector3.right);
+	}
+}
+
+function StopUpdate() {
+	stopFlag = true;
+}
+}}}
