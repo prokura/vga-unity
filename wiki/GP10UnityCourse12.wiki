@@ -1,17 +1,17 @@
 #summary ミドルウェア (12)
 
 {{{
-private var stop : boolean;
+private var stopFlag : boolean;
 
 function Update() {
-	if (!stop) {
+	if (!stopFlag) {
 		var red : float = Mathf.Sin(Time.time * 100.0);
 		renderer.material.color = Color(red, 0, 0, 0);
 	}
 }
 
-function StopFlicker() {
-	stop = true;
+function StopUpdate() {
+	stopFlag = true;
 }
 }}}
 
@@ -19,24 +19,23 @@ function StopFlicker() {
 function OnTriggerEnter(other : Collider) {
 	var flickerComponent : Flicker = other.GetComponent(Flicker);
 	if (flickerComponent != null) {
-		flickerComponent.StopFlicker();
+		flickerComponent.StopUpdate();
 	}
 }
-
 }}}
 
 {{{
-private var stop : boolean;
+private var stopFlag : boolean;
 
 function Update() {
-	if (!stop) {
+	if (!stopFlag) {
 		var green : float = Mathf.Sin(Time.time * 12.0);
 		renderer.material.color = Color(0, green, 0, 0);
 	}
 }
 
-function StopBlinker() {
-	stop = true;
+function StopUpdate() {
+	stopFlag = true;
 }
 }}}
 
@@ -44,12 +43,12 @@ function StopBlinker() {
 function OnTriggerEnter(other : Collider) {
 	var flickerComponent : Flicker = other.GetComponent(Flicker);
 	if (flickerComponent != null) {
-		flickerComponent.StopFlicker();
+		flickerComponent.StopUpdate();
 	}
 
 	var blinkerComponent : Blinker = other.GetComponent(Blinker);
 	if (blinkerComponent != null) {
-		blinkerComponent.StopBlinker();
+		blinkerComponent.StopUpdate();
 	}
 }
 }}}
