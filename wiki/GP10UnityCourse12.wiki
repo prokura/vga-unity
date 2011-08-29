@@ -52,3 +52,15 @@ function OnTriggerEnter(other : Collider) {
 	}
 }
 }}}
+
+{{{
+function OnTriggerEnter(other : Collider) {
+	other.SendMessage("StopUpdate");
+}
+}}}
+
+{{{
+function OnTriggerEnter(other : Collider) {
+	other.SendMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
+}
+}}}
