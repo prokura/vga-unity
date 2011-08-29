@@ -1,7 +1,33 @@
 #summary ミドルウェア (12)
 
+= オブジェクト間連携（メッセージング） =
+
+複数のゲームオブジェクトが相互に連携して動作するための仕組みを学ぶ。
+
+= 方法その１・コンポーネントへの直接アクセス =
+
+コンポーネント(Component)とは「部品」のこと。Unityにおける{{{Transform}}}とか{{{Rigidbody}}}とか{{{BoxCollider}}}とかは、全部コンポーネント。
+
+ユーザーが書いたスクリプトもコンポーネントとして扱うことができる。例えばBoxスクリプトは{{{Box}}}コンポーネントとなる。
+
+Unityに用意されている標準的なコンポーネントについては、{{{transform}}}や{{{rigidbody}}}や{{{collider}}}などのように、プロパティ経由で簡単にアクセスできる。しかし、レアなコンポーネントや、ユーザーが自作したコンポーネントへは{{{GetComponent}}}を使わないとアクセスできない。
+
+== 箱の点滅を止めるには ==
+
+まず、Flicker/Blinkerスクリプトに、点滅を止めるための関数を用意する。
+
+次に、Wallスクリプトの中でFlicker/Blinkerコンポーネントへのアクセスを取得し、そこから点滅を止めるための関数を呼び出す。
+
+== Flickerの拡張 ==
+
+{{{stopFlag}}}を用意し、{{{StopUpdate}}}関数を呼ぶと止まるようにする。
+
 {{{
 private var stopFlag : boolean;
+
+function StopUpdate() {
+	stopFlag = true;
+}
 
 function Update() {
 	if (!stopFlag) {
@@ -9,11 +35,13 @@ function Update() {
 		renderer.material.color = Color(red, 0, 0, 0);
 	}
 }
-
-function StopUpdate() {
-	stopFlag = true;
-}
 }}}
+
+== {{{StopUpdate}}}を呼び出す ==
+
+Wallスクリプトの{{{OnTriggerEnter}}}内で、{{{GetComponent}}}関数を使ってFlickerコンポーネントへのアクセスを取得し、成功したら{{{StopUpdate}}}関数を呼び出す。
+
+指定されたコンポーネントが存在しない場合、{{{GetComponent}}}関数はnullを返す。これにより、相手が特定のコンポーネントを持つか否かを判定できる。
 
 {{{
 function OnTriggerEnter(other : Collider) {
@@ -24,20 +52,11 @@ function OnTriggerEnter(other : Collider) {
 }
 }}}
 
-{{{
-private var stopFlag : boolean;
+== Blinkerも対応する ==
 
-function Update() {
-	if (!stopFlag) {
-		var green : float = Mathf.Sin(Time.time * 12.0);
-		renderer.material.color = Color(0, green, 0, 0);
-	}
-}
+BlinkerスクリプトをFlickerスクリプトと同じように拡張する。
 
-function StopUpdate() {
-	stopFlag = true;
-}
-}}}
+Wallスクリプト側も対応する。
 
 {{{
 function OnTriggerEnter(other : Collider) {
@@ -84,3 +103,7 @@ function StopUpdate() {
 	stopFlag = true;
 }
 }}}
+
+= メッセージングの引数 =
+
+= 自分自身との連携 =
