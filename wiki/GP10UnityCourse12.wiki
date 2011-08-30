@@ -208,3 +208,7 @@ function Start() {
     * プレイヤー側からプレイヤーステータス管理オブジェクトに{{{RegainLife}}}メッセージを送信。ライフが回復する。
 
 このようなオブジェクト間連携の仕組みは、Unityを使う場合に限らず、あらゆるゲームの実装に必要とされる。C++を使うにしても、継承をベースにした連携の仕組みには限界が生じる場合があり、メッセージングのような仕組みを自前で組むことも少なくない。
+
+== 課題 ==
+
+http://vga-unity.googlecode.com/files/MessagingExampleGame.unitypackage
