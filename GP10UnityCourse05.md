@@ -1,0 +1,252 @@
+# イントロ #
+
+  * 先週のおさらい。
+  * 手本の作り方をレクチャー。
+  * 課題の回収。
+
+# GUI #
+
+  * ボタンやラベルなど、一般的なユーザーインターフェースを扱うための仕組み。
+  * `OnGUI`関数の中でのみ使うことができる。
+
+### ラベル ###
+
+  * 単に文字を表示する。
+  * 第一引数に表示領域を指定。第二引数に表示する文字列を指定。
+
+```
+function OnGUI() {
+    GUI.Label(Rect(10, 10, 100, 40), "Hello, world!");
+}
+```
+
+### ボタン ###
+
+  * ボタンが押された瞬間にtrueを返す。
+  * 第一引数にボタンの表示領域を指定。第二引数にボタンのラベルを指定。
+
+```
+function OnGUI() {
+    if (GUI.Button(Rect(10, 10, 100, 40), "Push this!")) {
+        Debug.Log("Hello!");
+    }
+}
+```
+
+### スライダー ###
+
+  * floatの値を扱うための仕組み。
+  * 引数は、表示領域、現在の値、最小値、最大値、の順に指定する。
+
+```
+var value : float;
+
+function OnGUI() {
+	value = GUI.HorizontalSlider(Rect(10, 10, 100, 40), value, 0, 100);
+	GUI.Label(Rect(120, 10, 100, 40), value.ToString());
+}
+```
+
+# `GUILayout` #
+
+  * 配置を自動的に行うための仕組み。
+  * `GUI`クラスの代わりに`GUILayout`を使う。
+  * 引数はほぼ同じ。ただし、第一引数の表示領域は省略する。
+  * `BeginArea`で自動配置を開始する。第一引数には、配置に使う領域を指定する。
+
+### 縦配置 ###
+
+  * 縦に要素を並べるには`BeginVertical`を使う。
+  * 並べる要素の終わりに`EndVertical`を置く。
+
+```
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.Button("Button 1");
+    GUILayout.Button("Button 2");
+    GUILayout.Button("Button 3");
+    GUILayout.Button("Button 4");
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+```
+### 横配置 ###
+
+  * 横に要素を並べるには`BeginHorizontal`を使う。
+  * 並べる要素の終わりに`EndHorizontal`を置く。
+
+```
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginHorizontal();
+    GUILayout.Button("Button 1");
+    GUILayout.Button("Button 2");
+    GUILayout.Button("Button 3");
+    GUILayout.Button("Button 4");
+    GUILayout.EndHorizontal();
+    GUILayout.EndArea();
+}
+```
+
+### 可変スペース ###
+
+  * 可変スペースを入れるには`FlexibleSpace`を使う。
+
+  * ボタンを中央に寄せる。
+
+```
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 1");
+    GUILayout.Button("Button 2");
+    GUILayout.Button("Button 3");
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+```
+
+  * ボタン間隔を均等に空ける。
+
+```
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 1");
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 2");
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 3");
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+```
+
+### 固定スペース ###
+
+  * 固定スペースを入れるには`Space`を使う。
+
+  * ボタンを中央に寄せたうえで、ボタンの間に固定スペースを挿入する。
+
+```
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+    GUILayout.Button("Button 1");
+    GUILayout.Space(10);
+    GUILayout.Button("Button 2");
+    GUILayout.Space(10);
+    GUILayout.Button("Button 3");
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+```
+
+# 複雑な配置 #
+
+  * `BeginHorizontal`, `BeginVertical`, `FlexibleSpace`などを組み合わせることによって、凝った配置を自動的に行うことができる。
+  * 現在の画面の幅・高さは`Screen.width`, `Screen.height`から取得することができる。配置に使う領域を算出するのに使うとよい。
+
+  * `GUILayout`系の関数では、引数の最後に`GUILayoutOption`を渡すことにより、配置のされかたを微調整することができる。`GUILayoutOption`については[こちら](http://unity3d.com/support/documentation/ScriptReference/GUILayoutOption.html)。
+  * 次の例では、`GUILayout.Width`を使ってラベルの幅を明示的に指定している。
+
+```
+function OnGUI() {
+    GUILayout.BeginArea(Rect(0, 0, Screen.width, Screen.height));
+
+    GUILayout.BeginHorizontal();
+    GUILayout.FlexibleSpace();
+
+    GUILayout.BeginVertical();
+    GUILayout.FlexibleSpace();
+
+    GUILayout.Label("TITLE", GUILayout.Width(100));
+    GUILayout.Space(10);
+    GUILayout.Button("Button 1");
+    GUILayout.Space(5);
+    GUILayout.Button("Button 2");
+    GUILayout.Space(5);
+    GUILayout.Button("Button 3");
+
+    GUILayout.FlexibleSpace();
+    GUILayout.EndVertical();
+
+    GUILayout.FlexibleSpace();
+    GUILayout.EndHorizontal();
+
+    GUILayout.EndArea();
+}
+```
+
+# 日本語を使う #
+
+  * スクリプトファイルのエンコーディングをUTF-16 (UCS-2 little endian)に変更すれば、普通に日本語も使える。
+
+# スキン #
+
+  * GUIの見た目を入れ替えるための仕組み。
+  * ProjectビューのCreateメニューの"GUI Skin"から作成する。
+  * スクリプト側では`Skin`型の変数を使って受け取り、`GUI.skin`に代入することで適用する。
+
+```
+var skin : GUISkin;
+function OnGUI() {
+    GUI.skin = skin;
+    GUILayout.BeginArea(Rect(0, 0, 300, 300));
+    GUILayout.BeginVertical();
+    GUILayout.Label("Label あいうえお");
+    GUILayout.Button("Button あいうえお");
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+}
+```
+
+### スキンの設定方法 ###
+
+  * Boxなら"Box"の、Labelなら"Label"の、というように、それぞれのGUI要素に同名の項目が存在する。
+  * 主な項目。
+    * Normal - 通常時の表示に使われる背景と文字色の設定。
+    * Padding - 要素の内側のスペース幅。
+    * Margin - 要素の外側のスペース幅。
+    * Font - 文字の描画に使うフォント。
+    * Alignment - 「左寄せ」や「中央寄せ」など、位置揃えの指定。
+    * Word Wrap - 自動改行。
+    * Fixed Width, Fixed Height -  0以外の値を設定すると、要素の幅・高さが固定になる。
+    * Font Size - フォントの大きさ。
+    * Stretch Width, Stretch Height - オンにすると、幅や高さがフレキシブルになる。
+
+# フォント #
+
+  * TrueTypeフォントなら何でも使える。
+  * 使いたいTrueTypeフォントをProjectビューにドラッグ＆ドロップするだけ。
+  * スキンに設定することで使用できる。
+
+# 課題 #
+
+[手本](http://dl.dropbox.com/u/14572092/VgaUnity/GUICannon.html)と同じものを作成する。
+
+来週の授業開始時に回収。
+
+### 提出ディレクトリ ###
+
+```
+\\G-Server\Public\GP\Unity\Middleware0608
+```
+
+### ヒント ###
+
+  * とりあえずGUIの見た目は雑でもいいので、GUIに連動した動きや、弾を射出する部分を先に作ろう。
+  * 弾を射出する部分はこんな感じ。
+
+```
+    var pos : Vector3 = transform.position;
+    var dir : Vector3 = transform.up;
+    var bullet : GameObject = Instantiate(bulletPrefab, pos + dir * 2.0, Quaternion.identity);
+```

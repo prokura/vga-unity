@@ -1,0 +1,151 @@
+# イントロ #
+
+  * 先週のおさらい。
+  * 手本の作り方を一通りレクチャー。
+    * [ConvexとConcave](http://en.wikipedia.org/wiki/Convex_and_concave_polygons)
+  * 課題の回収。
+
+# キー入力 #
+
+### ジョイスティック入力 ###
+
+  * `Input.GetAxis`により、ジョイスティックの軸の傾きを取得することができる。
+  * 引数に軸の名前("Horizontal", "Vertical")を指定する。
+  * 値は-1.0〜+1.0の間の値で返される。
+
+  * ジョイスティックが無い場合はキー入力で代替される。
+  * ジョイパッド、キー入力の場合は、滑らかに値が変化する（擬似的なジョイスティック入力）。
+  * この辺りの挙動の設定はEdit→Project Settings→Inputの中にある。
+
+### ジョイスティック入力の視覚化 ###
+
+  * 適当な大きさの箱と、光源を配置する。
+  * 箱にスクリプトを与える。
+
+```
+function Update() {
+    transform.rotation =
+      Quaternion.AngleAxis(Input.GetAxis("Horizontal") * -45.0, Vector3.forward) *
+      Quaternion.AngleAxis(Input.GetAxis("Vertical") * 45.0, Vector3.right);
+}
+```
+
+  * ジョイパッドを持っていれば、ジョイパッドを試してみる。
+
+### ボタン入力 ###
+
+  * `Input.GetButton`により、ボタンを押している状態を取得することができる。
+  * 引数にボタンの名前("Fire1", "Fire2", "Fire3", "Jump")を指定する。
+  * キーボードの場合は、それぞれ左CTRL、左ALT、左CMD、スペース、に対応している。
+
+  * 押した瞬間を検出するには`Input.GetButtonDown`を使う。
+  * 離した瞬間を検出するには`Input.GetButtonUp`を使う。
+
+### ボタン入力の視覚化 ###
+
+  * スクリプトに以下の文を追加する。
+
+```
+    var scale : float = Input.GetButton("Jump") ? 3.0 : 1.0;
+    transform.localScale = Vector3(scale, scale, scale);
+```
+
+  * ボタン名を変えてみる。
+  * `GetButtonDown`や`GetButtonUp`も試してみる。
+
+# Rigidbodyと力 #
+
+  * `AddForce`関数により、Rigidbodyに力を加えることができる。
+  * 第一引数にベクトルを与える。加える力の向きと大きさを表す。
+  * 第二引数に力を加えるモードを指定する（後述）。
+
+### セットアップ ###
+
+  * 適当な広さの床を作る。
+  * 光源を配置する。
+  * 床の上に箱を置く。
+  * 箱にスクリプトを与える。
+
+### Forceモード ###
+
+```
+function Update() {
+    rigidbody.AddForce(Vector3.right * 10.0, ForceMode.Force);
+}
+```
+
+  * Forceは持続的に発生する力を与えるモード。
+  * 物理学では「力」。時間あたりの運動量の変化を表す。
+
+### Impulseモード ###
+
+```
+function Start() {
+    yield WaitForSeconds(2.0);
+    rigidbody.AddForce(Vector3.right * 20.0, ForceMode.Impulse);
+}
+```
+
+  * Impulseは瞬間的に発生する力を与えるモード。
+  * 物理学では「力積」。運動量の変化を表す。
+
+### Acceleration ###
+
+  * Accelerationは加速度を直接指定するモード。
+  * Forceと似ているが、相手の重さの影響を受けない。
+
+### VelocityChange ###
+
+  * VelocityChangeは速度の変化量を直接指定するモード。
+  * Impulseと似ているが、相手の重さの影響を受けない。
+
+# Constraintsを使う #
+
+  * Constraintとは「拘束」の意。
+  * Rigidbodyのプロパティの中にある。
+  * Rigidbodyの動きや回転を、特定の軸に関して制限することができる。
+  * 傾けたくないRigidbodyや、2Dゲームに利用する。
+
+### キー入力による動き ###
+
+  * 適当な広さの床を作る。
+  * 光源を配置する。
+  * 床の上にSphereを置く。
+  * Sphereにスクリプトを与える。
+
+```
+function Update() {
+    var move : Vector3 =
+      Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+    move = move.normalized * 8.0;
+    rigidbody.AddForce(move, ForceMode.Force);
+}
+```
+
+### Capsule形状への置き換え ###
+
+  * Sphereを一旦消して、Capsuleに入れ替えてみる。
+  * とりあえず動かしてみる。
+  * Constraintsを使って回転のX軸とZ軸を拘束してみる。
+  * Constraintsを使って位置のZ軸を拘束してみる。
+
+# 課題 #
+
+[手本](http://dl.dropbox.com/u/14572092/VgaUnity/Force1.html)と同じものを作成する。
+
+  * キー入力でカプセルを移動。
+  * スペースキーでジャンプ。
+  * Kinematicな回転する床。
+  * 一定間隔で跳ねる箱。この箱はカプセルで押すことができる。
+
+来週の授業開始時に回収。
+
+### 提出ディレクトリ ###
+
+```
+\\G-Server\Public\GP\Unity\Middleware0601
+```
+
+### 余力があれば ###
+
+[手本その２](http://dl.dropbox.com/u/14572092/VgaUnity/Force2.html)

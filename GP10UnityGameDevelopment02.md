@@ -1,0 +1,241 @@
+# イントロ #
+
+  * 前回やったことのおさらい。
+
+# タイトル画面シーンの作成 #
+
+  * 現状のシーンは"Main"で保存。
+  * 別名でシーンを保存することで複写する。名前は"Title"とする。
+  * "File"→"Build Settings"で"Scenes in Build"ボックスの中にすべてのシーンが含まれていることを確認する。
+
+  * タイトル画面に必要な要素以外は削除する。
+  * TitleScreenオブジェクトとTitleScreenスクリプトを追加。
+
+```
+var labelStyle : GUIStyle;
+
+function Update () {
+    if (Input.GetButtonDown("Jump")) {
+        Application.LoadLevel("Main");
+    }
+}
+
+function OnGUI () {
+    var sw = Screen.width;
+    var sh = Screen.height;
+    GUI.Label(Rect(0, sh / 4, sw, sh / 4), "BALL MAZE", labelStyle);
+    GUI.Label(Rect(0, sh / 2, sw, sh / 4), "Hit Space Key", labelStyle);
+}
+```
+
+  * `Application.LoadLevel`関数でシーンのロードを行う。
+
+  * Label Styleの設定を行う。
+  * 実行確認。
+
+### クリア時の処理の改造 ###
+
+  * タイトル画面へ戻るようにする。
+
+```
+var labelStyle : GUIStyle;
+
+private var ballCount : int;
+private var counter : int;
+private var cleared : boolean;
+
+function Start() {
+    ballCount = GameObject.FindGameObjectsWithTag("Ball").length;
+}
+
+function OnTriggerEnter(other : Collider) {
+    if (other.gameObject.tag == "Ball") {
+        counter++;
+        if (counter == ballCount && cleared == false) {
+            cleared = true;
+            yield WaitForSeconds(2.0);
+            Application.LoadLevel("Title");
+        }
+    }
+}
+
+function OnTriggerExit(other : Collider) {
+    if (other.gameObject.tag == "Ball") {
+        counter--;
+    }
+}
+
+function OnGUI() {
+    if (cleared == true) {
+        var sw = Screen.width;
+        var sh = Screen.height;
+        GUI.Label(Rect(0, sh / 3, sw, sh / 3), "CLEARED!", labelStyle);
+    }
+}
+```
+
+  * 内容を復習しながら確認。
+  * `yield`は「処理を一時停止する」という構文。
+  * `yield`の次には再開条件を指定する。ここでは`WaitForSeconds`で2秒待つという条件を指定。
+
+  * これで複数ステージを扱えるようになった。
+  * インデクスを使う方法。
+
+# 2D描画 #
+
+  * 画像ファイルをProjectビューにドラッグ＆ドロップして素材を追加。
+  * スクリプトでは`Texture2D`クラスを使って受け取る。
+  * 表示には`GUI.DrawTexture`を使う。
+
+```
+var titleTexture : Texture2D;
+
+function OnGUI () {
+	GUI.DrawTexture(Rect((Screen.width - 512) * 0.5, 0, 512, 128), titleTexture);
+}
+```
+
+# トラップを点滅させてみる #
+
+  * FlickerEffectスクリプトを新規作成。
+
+```
+private var originalColor : Color;
+
+function Awake () {
+    originalColor = renderer.material.color;
+}
+
+function Update () {
+    var level : float = Mathf.Abs(Mathf.Sin(Time.time * 20));
+    renderer.material.color = originalColor * level;
+}
+```
+
+  * スクリプトからマテリアルにアクセスするには`renderer.material`を使う。
+  * カラー情報をサイン波で点滅させている。
+  * 色に対する掛け算を使っている。
+
+  * FlickerEffectスクリプトをTrapプレハブにドラッグ＆ドロップ。
+
+# 回転する障害物を作ってみる #
+
+  * Cubeを配置。
+  * Spinnerスクリプトを新規作成。Cubeに追加。
+
+```
+function Update () {
+    transform.localRotation = Quaternion.AngleAxis(Time.time * -45.0, Vector3.up);
+}
+```
+
+  * `FromToRotation`について。
+
+# 開閉する障害物を作ってみる #
+
+  * Cubeを配置。
+  * Sliderスクリプトを新規作成。Cubeに追加。
+
+```
+private var origin : Vector3;
+
+function Start () {
+    origin = transform.position;
+}
+
+function Update () {
+    var dx : float = Mathf.Sin(Time.time) * 3.0;
+    transform.position = origin + Vector3(dx, 0, 0);
+}
+```
+
+  * このバージョンは移動方向が固定。
+  * transformの`up`, `right`, `forward`プロパティをうまく使えば、方向を姿勢に追従させることができる。
+
+```
+    transform.position = origin + transform.right * dx;
+```
+
+# バンパーを作ってみる #
+
+  * Cubeを配置。
+  * Bumperスクリプトを新規作成。Cubeに追加。
+  * 下方向に跳ね返すバージョン。
+
+```
+function OnCollisionEnter (collision : Collision) {
+    collision.rigidbody.AddForce(Vector3(0, 0, -20), ForceMode.Impulse);
+}
+```
+
+  * 力を与えるには`AddForce`を使う。引数は、力のベクトルと、力を与えるモード。
+  * 瞬間的な力を与えるには`ForceMode.Impulse`を使う。
+
+  * 外側に弾き返すよう改良してみる。
+
+```
+function OnCollisionEnter (collision : Collision) {
+    var dir : Vector3 = collision.transform.position - transform.position;
+    collision.rigidbody.AddForce(dir.normalized * 20.0, ForceMode.Impulse);
+}
+```
+
+# 磁力フィールドを作ってみる #
+
+  * Cubeを配置。
+  * ColliderのIs Triggerをオンにする。
+  * Magnetスクリプトを新規作成。Cubeに追加。
+
+```
+function OnTriggerStay (other : Collider) {
+    if (other.gameObject.tag == "Ball") {
+        other.rigidbody.AddForce(Vector3(0, 0, -20), ForceMode.Force);
+    }
+}
+```
+
+  * 連続的な力を与えるには`ForceMode.Force`を使う。
+
+# メッセージング（オブジェクト間連携） #
+
+  * 連携する相手は`GameObject`型の変数によって指定することができる。
+  * 連携する相手に対する指令はメッセージングという形で伝える。
+  * メッセージを伝えるには`SendMessage`関数を使う。
+
+  * センサー側は、例えばこんな実装になる。
+
+```
+var doorObject : GameObject;
+
+function OnTriggerEnter(other : Collider) {
+    doorObject.SendMessage("OpenDoor");
+}
+
+function OnTriggerExit(other : Collider) {
+    doorObject.SendMessage("CloseDoor");
+}
+```
+
+  * メッセージを受信する側は、メッセージ名と同じ関数を定義する。例えばこんな実装になる。
+
+```
+private var isOpen : boolean;
+
+function OpenDoor() {
+    isOpen = true;
+}
+
+function CloseDoor() {
+    isOpen = false;
+}
+```
+
+# 課題の提出 #
+
+  * Web Player形式でビルドしたものを、以下のディレクトリに格納する。
+
+```
+\\G-Server\Public\GP\Unity\PS3_0518
+```
+
+  * 次回の始めに回収。

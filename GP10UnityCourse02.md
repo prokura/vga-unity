@@ -1,0 +1,210 @@
+# イントロ #
+
+  * 先週のおさらい。
+  * 手本の作り方を一通りレクチャー。
+  * 課題の制作、提出。
+
+# ビルドの手順 #
+
+  * まず、シーンをセーブ。
+  * メニューの"File"→"Build Settings..."を開く。
+  * "Scenes in Build"ボックスにシーンが含まれているかどうか確認。
+    * 含まれていなければ、"Add Current"ボタンで追加する。
+  * "Platform"ボックスでWeb Playerが選択されているかどうか確認。
+    * 選択されていなければ、"Web Player"をクリックしてから"Switch Platform"を押す。
+  * "Build"ボタンを押してビルド開始。
+
+# 作品の提出 #
+
+### 提出ディレクトリ ###
+
+```
+\\G-Server\Public\GP\Unity\Middleware0518
+```
+
+### 提出の手順 ###
+
+まず、制作した作品をWeb Player用にビルドする。次に、上記ディレクトリ内に自分の苗字（ローマ字表記）でディレクトリを作成し、その中に.htmlと.unity3dをコピーする。なお、ファイル名は何でもよい。
+
+### 注意点 ###
+
+**ファイルサイズが大きくなり過ぎないように注意してください！**高解像度のテクスチャ画像を使うと、ファイルサイズが大きくなりがちです。今回の手本程度の内容では、100kB前後に収めるのが理想的です。
+
+# スクリプト入門 #
+
+  * Unityのスクリプトについて。
+  * JavaScriptとUnityスクリプトの違い。
+  * C#について。
+  * Monoと.NETについて。
+
+### スクリプトを書いてみる ###
+
+  * 新規プロジェクトを作成。
+  * Hierarchyビューの"Create"からCubeを作成。
+  * Hierarchyビューの"Create"からDirectional Lightを作成。
+    * 適当に回転して光が当たるようにする。
+  * Projectビューの"Create"からJavaScriptを作成。
+  * スクリプトの名前を"Test"に変更。
+  * Testスクリプトをダブルクリックでエディタを起動。
+
+```
+function Update () {
+    Debug.Log("Hello, world");
+}
+```
+
+  * TestスクリプトをHierarchyビューのCubeにドラッグ＆ドロップ。
+  * 実行してコンソールに"Hello, world"が出力されることを確認する。
+
+# 変数の定義 #
+
+  * UnityのJavaScriptで変数を定義するには`var 変数名 : 型;`
+
+```
+var hogehoge : int;
+```
+
+  * スクリプトに変数を加えると、インスペクター上でその変数の値を操作できるようになる。
+  * インスペクター上に露出したくない変数はprivate定義する。
+
+```
+private var hogehoge : int;
+```
+
+# トランスフォームの制御 #
+
+  * トランスフォームとは「変換」「変形」の意。
+  * オブジェクトの位置・回転・スケールを保持。
+  * プログラムからアクセスするにはtransformプロパティを使う。
+
+### 位置(position) ###
+
+  * Testスクリプトを編集して位置(position)へのアクセスを試してみる。
+  * X軸上を時間で動く。
+
+```
+function Update () {
+    transform.position.x = Time.time;
+}
+```
+
+  * サイン波でY軸を揺らしてみる。
+
+```
+function Update () {
+    transform.position.x = Time.time;
+    transform.position.y = Mathf.Sin(Time.time);
+}
+```
+
+  * ベクトルクラスで一度に代入。
+
+```
+function Update () {
+    transform.position = Vector3(Mathf.Cos(Time.time * 2.0) * 3.0,
+                                 Mathf.Sin(Time.time * 5.1) * 3.0,
+                                 0.0);
+}
+```
+
+### 回転(rotation) ###
+
+  * 回転の表現にはクオータニオン(Quaternion)を使う。
+  * Y軸回転してみる。
+
+```
+function Update () {
+    transform.rotation = Quaternion.AngleAxis(Time.time * 180.0, Vector3.up);
+}
+```
+
+  * `Quaternion.AngleAxis`は、任意の軸周りの回転を生成する関数。角度、軸、の順で引数を与える。
+  * `Vector3.up`は`Vector3(0,1,0)`と同義。
+
+  * X軸回転を加えてみる。
+
+```
+function Update () {
+    transform.rotation = Quaternion.AngleAxis(Time.time * 180.0, Vector3.up) *
+                         Quaternion.AngleAxis(Time.time * 33.3, Vector3.right);
+}
+```
+
+  * `Vector3.right`は`Vector3(1, 0, 0)`と同義。
+  * クオータニオンの回転は、掛け算によって合成することができる。
+
+### スケール(localScale) ###
+
+  * 横幅を伸び縮みさせてみる。
+
+```
+function Update () {
+    transform.localScale.x = 1.0 + Mathf.Sin(Time.time * 2.1);
+}
+```
+
+  * スケール値は1.0倍が基準になる。
+
+  * 大きさを拡縮させてみる。
+
+```
+function Update () {
+    transform.localScale = Vector3(1, 1, 1) * (1.0 + Mathf.Sin(Time.time * 2.1));
+}
+```
+
+# ローカル(local) #
+
+  * ローカルポジション`localPosition`やローカルローテーション`localRotation`を使うことで、親オブジェクトからの相対的な位置や、相対的な回転を制御することができる。
+  * 何らかのオブジェクトに付随して動く要素を作るときに使う。
+
+# 変数の使用 #
+
+  * スケールの最後の例で、変数を使ってみる。
+
+```
+var freq : float;
+
+function Update () {
+    transform.localScale = Vector3(1, 1, 1) * (1.0 + Mathf.Sin(Time.time * freq));
+}
+```
+
+  * Inspectorビューに変数が出現する。
+  * Inspectorビュー上で`freq`を2に設定して実行。
+  * 実行後に値を変更してみる。
+  * 実行終了時に値が戻ってしまうことを確認する。
+
+  * 変数を隠すには`private`を使う。
+
+```
+private var freq : float;
+
+function Update () {
+    transform.localScale = Vector3(1, 1, 1) * (1.0 + Mathf.Sin(Time.time * freq));
+}
+```
+
+  * Inspectorビューから`freq`が消えたことを確認する。
+
+# 課題 #
+
+[手本](http://dl.dropbox.com/u/14572092/VgaUnity/PoppingBox.html)と同じものを作成する。
+
+### 提出ディレクトリ ###
+
+```
+\\G-Server\Public\GP\Unity\Middleware0518b
+```
+
+### ヒント ###
+
+  * 絶対値とサイン波の組み合わせ。
+
+```
+Mathf.Abs( Math.Sin(...) )
+```
+
+### 余力があれば ###
+
+[数を増やしてみたり](http://dl.dropbox.com/u/14572092/VgaUnity/PoppingBox2.html)、箱を他の物体に入れ替えてみたり、もっと凝った動きにしてみたり……

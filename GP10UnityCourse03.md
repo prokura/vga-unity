@@ -1,0 +1,120 @@
+# イントロ #
+
+  * 先週のおさらい。
+  * 手本の作り方を一通りレクチャー。
+  * 課題の回収。
+
+# 物理挙動とトランスフォーム #
+
+### プログラムで動かす物体との干渉 ###
+
+  * 大きな床と、小さな床と、箱を作る。箱にはRigidbodyを追加して物理挙動を与える。
+  * 小さな床をスクリプトで動かす。
+
+```
+function Update () {
+  transform.position.x = Mathf.Sin(Time.time * 2.1) * 1.5;
+  transform.position.z = Mathf.Sin(Time.time * 1.7) * 1.5;
+  transform.rotation = Quaternion.AngleAxis(Time.time * 30.0, Vector3.up);
+}
+```
+
+  * 動作を確認する。
+    * [箱を小さな床の上に落とす配置。](http://dl.dropbox.com/u/14572092/VgaUnity/Platform1.html)
+    * [箱を小さな床の隣に配置。](http://dl.dropbox.com/u/14572092/VgaUnity/Platform2.html)
+
+  * 問題点。
+    * 箱は床の動きに従ってくれない。
+    * 床が箱にぶつかっても反応しない場合がある。
+
+### Kinematic Rigidbody ###
+
+  * 小さな床にRigidbodyコンポーネントを追加する。
+  * Is  Kinematicスイッチをオンにする。
+  * スクリプトを変更する。
+    * `Update`の代わりに`FixedUpdate`を使う。
+    * transformを直接アクセスするのではなく、`MovePosition`, `MoveRotation`を使う。
+
+```
+function FixedUpdate () {
+  var x : float = Mathf.Sin(Time.time * 2.1) * 1.5;
+  var z : float = Mathf.Sin(Time.time * 1.7) * 1.5;
+  rigidbody.MovePosition(Vector3(x, 0.0, z));
+  rigidbody.MoveRotation(Quaternion.AngleAxis(Time.time * 30.0, Vector3.up));
+}
+```
+
+  * [動作確認する。](http://dl.dropbox.com/u/14572092/VgaUnity/Platform3.html)
+
+# プレハブ #
+
+### プレハブとは ###
+
+  * ゲームオブジェクトの作り置きを実現する仕組み。
+  * コピーが簡単。
+  * コピーしたものについて、後から設定を変えるのが簡単。
+
+  * プレハブから生成されたものを「インスタンス」と呼ぶ。
+  * プレハブから実体を生成することを「インスタンス化」と言う。
+
+### プレハブの作り方 ###
+
+  * Projectビュー上でCreate→Prefabを選ぶ。
+  * 既に存在するゲームオブジェクトをドラッグ＆ドロップ。
+
+### プレハブのインスタンス化 ###
+
+  * プレハブをHierarchyビューにドラッグ＆ドロップ。
+
+# プログラムからの使用 #
+
+  * メニューのGame ObjectからCreate Emptyで空のゲームオブジェクトを作成する。
+  * 空のゲームオブジェクトにスクリプトを与える。
+
+```
+var boxPrefab : GameObject;
+
+function Update() {
+  if (Input.GetButtonDown("Fire1")) {
+    Instantiate(boxPrefab);
+  }
+}
+```
+
+  * インスペクター上に露出した`boxPrefab`にプレハブをドラッグ＆ドロップする。
+  * ボタンを押すごとにインスタンスが生成される。
+
+  * インスタンス化を行う際に、位置と回転を指定することもできる。
+
+```
+var boxPrefab : GameObject;
+
+function Update() {
+  if (Input.GetButtonDown("Fire1")) {
+    Instantiate(boxPrefab, transform.position, transform.rotation);
+  }
+}
+```
+
+# 課題 #
+
+[手本](http://dl.dropbox.com/u/14572092/VgaUnity/Pusher.html)と同じものを作成する。
+
+床の動きはZ軸上をSin関数で揺らすことにより実現。
+
+来週の授業開始時に回収。
+
+### 提出ディレクトリ ###
+
+```
+\\G-Server\Public\GP\Unity\Middleware0525
+```
+
+### 余力があれば ###
+
+[手本その２](http://dl.dropbox.com/u/14572092/VgaUnity/Pusher2.html)
+
+  * 形状をコインにする。
+    * ヒント：Mesh Colliderを使う。Convexをオンにする。
+  * コインの生成位置を左右に散らす。
+  * ランダムな回転を生成するには`Random.rotation`が使える。

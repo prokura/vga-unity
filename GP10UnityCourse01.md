@@ -1,0 +1,78 @@
+# イントロ #
+  * アンケート。
+    * 前の授業を受けたかどうか。
+    * Unityをインストールしてあるかどうか。
+  * 操作方法の軽いおさらい。
+
+# ミドルウェアとは #
+  * 定義。
+  * OpenGL, DirectX = API. .NET Framework = ???
+  * Game Engine (Unity, Unreal Engine, Gamebryo, CryEngine)
+  * Physics (Havok, PhysX, Bullet, Box2D)
+  * Havok - Havok Animation, Havok Behavior, Havok AI, etc...
+  * 内製(Crystal, MT Framework, Rage)
+  * コスト、スケールメリット、分業化。
+
+# Unity #
+  * Unity Technologies.
+  * デンマーク（コペンハーゲン）。
+  * Democratize game development.
+  * ライセンス。
+
+# Unityプロジェクトの概念 #
+  * プロジェクト ＝ "Assets"と"Library"の親になる基点ディレクトリ。
+  * プロジェクトのディレクトリ名は後から自由に変えて大丈夫。
+
+## Assets ##
+  * Assets ＝ Projectビューの中身と同等。
+    * "Asset" = 資産、転じて、ゲームのデータセットを表す一般名詞。
+  * Assetsへのファイルの追加、削除は勝手に行ってはいけない。必ずUnityを通す。
+  * Assets内のファイルの編集は、勝手に行ってよい。Unityが自動的に再コンバートする。
+
+## Library ##
+  * Unityが生成する中間ファイルの格納場所。
+  * 中身は謎。人の手でいじってはいけない。
+  * Pro版は少し異なる。
+
+# 今後の授業の進め方 #
+  * 課題の提出の手順。
+  * まとめページについて。
+
+# 物理挙動の基本 #
+  * Rigidbodyコンポーネントを追加すると、ゲームオブジェクトは物理挙動を持つようになる。
+    * メニューのComponent→Rigidbody
+  * 動かない物体はRigidbodyを持たなくてもよい。
+  * プログラムで動かす物体は、RigidbodyのisKinematicをオンにする。
+  * 重量の設定はRigidbodyのmassで行う。
+
+<a href='Hidden comment: 
+= 物理属性 =
+* 物理的な属性（摩擦係数や反射係数など）はPhysic Materialで設定できる。
+* ProjectビューのCreate→Physic Materialで新規作成。
+* Static Friction - 静摩擦係数
+* Dynamic Friction - 動擦係数
+* Bounciness - 反射係数
+* ドラッグ＆ドロップで設定。
+'></a>
+
+# 階層構造 #
+  * 動きを連動させるための仕組み。
+  * "Hierarchy" ＝ 「改造構造」
+  * 親となるオブジェクトに、子となるオブジェクトをドラッグ＆ドロップする。
+  * 複数のオブジェクトをまとめるときは、「空のゲームオブジェクト」を使うとよい。
+  * 空のゲームオブジェクトを作るには、メニューのGame ObjectからCreate Emptyを実行。
+
+# 合成形状の物理挙動 #
+  * 複数の形状を合成して物理挙動を与えるには、階層構造を使う。
+  * ルール「Rigidbodyは親オブジェクトにひとつだけ与える」
+  * すなわち、ひとつの階層の中に複数のRigidbodyが存在しては（基本的には）ダメ。
+
+# 課題 #
+
+以下の手本と同じものを作成する。
+
+[手本のページ](http://dl.dropbox.com/u/14572092/VgaUnity/PhysicsLesson.html)
+
+余力があれば、自分なりのアレンジを加えてもよい。
+
+（時間の都合により、課題の提出は翌週に持ち越し。）

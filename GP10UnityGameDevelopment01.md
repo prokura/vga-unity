@@ -1,0 +1,204 @@
+# イントロ #
+  * 今後の授業の進め方。
+
+# 最初の課題：迷路ゲーム #
+まずは以下の作例と同じものを作ることを目標にします。
+
+[作例のページ](http://dl.dropbox.com/u/14572092/VgaUnity/BallMazePrototype.html)
+
+# 形だけ作ってみる #
+
+## 迷路の構築 ##
+  * 床を作る。
+  * 壁を作る。
+
+## プレハブについて ##
+  * プレハブとは、ゲームオブジェクトの「作り置き」。
+  * プレハブを使うと、たくさんの複製を生成できる。
+  * プレハブを使うと、プログラムから複製を生成できる。
+  * プレハブを使うと、いっぺんに設定を変更できる。
+  * ProjectビューのCreate→Prefabで空のプレハブを作成。
+  * 任意のゲームオブジェクトをドラッグ＆ドロップしてプレハブ化。
+  * プレハブをHierarchyビューにドラッグ＆ドロップでインスタンス化。
+  * インスタンス＝「実体化」。プレハブをシーン中に実体化させたもの。
+  * インスタンスは、エディット時には青色表示される。
+
+## 迷路の構築（続き） ##
+  * プレハブを使って、外壁を作る。
+  * プレハブを使って、障害物を作る。
+  * 空のオブジェクトを親にして階層構造化する。
+
+## マテリアル ##
+  * マテリアル＝「材質」。
+  * シェーダーやテクスチャやカラーを組み合わせて、描画のされ方を決めるもの。
+  * ProjectビューのCreate→Materialでマテリアル作成。
+  * Base (RGB)の横の四角にテクスチャをドラッグ＆ドロップでテクスチャ設定。
+  * Main Colorで色合い設定。
+  * マテリアルをオブジェクトにドラッグ＆ドロップで設定。
+  * 外壁や障害物はプレハブにドラッグ＆ドロップ。
+
+## ボールの作成 ##
+  * Sphereを作って、Rigidbodyコンポーネントを与えるだけ。
+  * プレハブ化して、何個か配置。
+
+## 床を動かす ##
+  * プログラムで動かす場合は、Rigidbodyコンポーネントを追加してisKinematicをオンにする。
+  * 余力があれば、プログラムを書いて制御してみる。
+  * ProjectビューのCreate→JavaScriptで新規スクリプト作成。
+  * スクリプトを迷路の親オブジェクトにドラッグ＆ドロップする。
+```
+function Update () {
+	transform.rotation = 
+		Quaternion.AngleAxis(Input.GetAxis("Horizontal") * -10.0, Vector3.forward) *
+		Quaternion.AngleAxis(Input.GetAxis("Vertical") * 10.0, Vector3.right);
+}
+```
+
+## 問題 ##
+  * ボールが止まる。
+  * ボールが床を抜ける。
+
+ボールが止まるのは、物理エンジンのスリープのため。
+
+ボールが床を抜けるのは、離散コリジョン判定のため。
+
+連続コリジョン判定の設定を適用しても、この問題は解決することができない（Unityの仕様）。
+
+## ボールのスリープを避ける ##
+  * Ballスクリプトを作成。
+  * ボールのプレハブにドラッグ＆ドロップ。
+```
+function Update () {
+	rigidbody.WakeUp();
+}
+```
+
+## 重力コントローラーを作る ##
+  * シーンに空のゲームオブジェクトを追加。
+  * GravityControllerスクリプトを作成し、空のゲームオブジェクトにドラッグ＆ドロップ。
+```
+function Update () {
+	Physics.gravity = 
+		Quaternion.AngleAxis(Input.GetAxis("Horizontal") * 60.0, Vector3.forward) *
+		Quaternion.AngleAxis(Input.GetAxis("Vertical") * -60.0, Vector3.right) *
+		(Vector3.up * -20.0);
+}
+```
+  * 迷路のコントローラーは削除する。
+
+## 見た目の傾きを擬似的に作り出す ##
+  * 空のオブジェクトを作る（これが親オブジェクトになる）。
+  * 親オブジェクトの子としてカメラ、光源、背景、等々を追加する。
+  * 親オブジェクトに次のスクリプトを与える（迷路を傾けるオブジェクトの符号を変えただけ）。
+
+```
+function Update () {
+	transform.rotation = 
+		Quaternion.AngleAxis(Input.GetAxis("Horizontal") * 10.0, Vector3.forward) *
+		Quaternion.AngleAxis(Input.GetAxis("Vertical") * -10.0, Vector3.right);
+}
+```
+
+## トラップを配置 ##
+  * キューブを作成。Box Colliderの"Is Trigger"をオンにする。
+  * トリガーはオブジェクトの接触を検出するための仕組み。
+  * Is Triggerをオンにすると、ボールはすり抜けるようになる（その裏で検出が行われている）。
+  * 接触を処理するには、スクリプトにOnTriggerEnter関数を用意すればよい。
+
+### タグ ###
+  * Unityでオブジェクトを検索するには「タグ」を使うことが推奨されている。
+  * Inspectorの一番上にある"Tag"ドロップダウンリストで設定できる。
+  * トラップでは、ボールの再開地点を指定するために、これを使う。
+  * 再開地点を空のゲームオブジェクトで作成し、タグをRespawnにする。
+
+### Trapスクリプトの中身 ###
+```
+function OnTriggerEnter (other : Collider) {
+	other.transform.position =
+		GameObject.FindWithTag("Respawn").transform.position;
+}
+```
+
+## ゴール判定 ##
+  * トリガーを配置する。
+  * トリガーに入っているボールの数を、配置されているボールの総数と比較すればよい。
+  * OnTriggerExitを使えば、ボールがトリガーを出たタイミングも検出できる。
+  * GameObject.FindGameObjectsWithTagを使えば、Ballタグを持つオブジェクトを総検索することができる。その配列の長さから、ボールの総数が分かる。
+
+```
+private var counter : int; // トリガーに触れているボールの数
+private var totalBall : int; // シーン中に存在するボールの総数
+
+function Start () {
+    // シーン中のボールの総数を取得する。
+    totalBall = GameObject.FindGameObjectsWithTag("Ball").length;
+}
+
+function OnTriggerEnter (other : Collider) {
+    // 相手はボールか？タグでチェック。
+    if (other.gameObject.tag == "Ball") {
+        // カウンターをインクリメント。
+        counter++;
+        // カウンターが総数になっていればクリア！！
+        if (counter == totalBall) {
+            Debug.Log("CLEARED!!!");
+        }
+    }
+}
+
+function OnTriggerExit (other : Collider) {
+    if (other.gameObject.tag == "Ball") {
+        counter--;
+    }
+}
+```
+
+## クリアメッセージの表示 ##
+  * Unityで文字表示を行うにはGUIを使うのが最も手軽。
+  * GUIの処理はOnGUI関数の中に書く。
+  * GUIの表示のされ方は、!GUIStyleによって指定することができる。
+  * 次のスクリプトのように、パブリックな変数としてGUIStyleを定義すると、Inspector上でスタイルの中身を設定できるようになる。
+
+```
+var style : GUIStyle;
+
+private var counter : int;
+private var totalBall : int;
+private var cleared : boolean;
+
+function Start () {
+	totalBall = GameObject.FindGameObjectsWithTag("Ball").length;
+}
+
+function OnTriggerEnter (other : Collider) {
+	if (other.gameObject.tag == "Ball") {
+		counter++;
+		if (counter == totalBall) {
+			Debug.Log("CLEARED!!!");
+			cleared = true;
+		}
+	}
+}
+
+function OnTriggerExit (other : Collider) {
+	if (other.gameObject.tag == "Ball") {
+		counter--;
+	}
+}
+
+function OnGUI () {
+	if (cleared) {
+    	GUI.Label (Rect(0, 0, Screen.width, Screen.height), "Cleared!!", style);
+	}
+}
+```
+
+### スタイルの設定 ###
+  * Normal内のText Colorで色を設定。
+  * Font Sizeで大きさを設定。
+  * AlignmentをMiddleCenterに設定すると、中央に表示されるようになる。
+
+### フォントの使用 ###
+  * TrueTypeフォントならなんでも使える。
+  * Projectビューにドラッグ＆ドロップでフォントを追加。
+  * GUIStyleのFontにドラッグ＆ドロップで、スタイルに対して設定。

@@ -1,0 +1,174 @@
+# はじめに #
+
+今回の内容に合わせてモデルデータを更新した。次のURLからダウンロードできる。
+
+> http://vga-unity.googlecode.com/files/VantanKun2.unitypackage
+
+このファイル(unitypackage)をインポートするには、メインメニューからAssets→Import Package→Custom Packageを実行する。ファイルダイアログが表示されるので、VantanKun2.unitypackageを選択する。すると、Projectビューの中に新たなディレクトリ(VantanKun2)が構築される。
+
+ディレクトリVantanKun2の中には、VantanKun2プレハブとVantanKun2\_Ragdollプレハブが格納されている。VantanKun2は更新されたキャラクターモデル。VantanKun2\_Ragdollは、後半で解説する「ラグドール」を組み込んだもの。
+
+# 準備 #
+
+  * 床を作る。
+  * 適当に光源を置く。
+  * VantanKun2プレハブを適当に配置する。
+
+# キャラクターコントローラー (CharacterController) #
+
+キャラクターモデルとRigidbodyを組み合わせれば、キャラクターの動きを作ることはできる（[過去の作例](http://dl.dropbox.com/u/14572092/VgaUnity/Force2.html)）が、余計な慣性がついてしまったり、思いがけない弾みが生まれてしまったりと、不都合が発生することがある。
+
+物理挙動が不要な場合（プログラムによるダイレクトな制御を行いたい場合）は、キャラクターコントローラー(CharacterController)を使うとよい。
+
+  * VantanKun2を選択する。
+  * メインメニューのComponent→Physics→Character Controllerを実行する。
+  * Inspector上でCharacter Controllerが追加されていることを確認する。
+
+キャラクターコントローラーはカプセル形状のColliderを持っており、これでキャラクターの当たり判定を行う。ゆえにこのカプセル形状は、キャラクターの大きさにフィットしていなくてはいけない。
+
+カプセルの形状は、Height（高さ）、Radius（半径）、Center（中心座標）で調整できる。
+
+  * カプセルの形状を調整して、キャラクターにフィットさせる。
+
+## 移動のプログラミング ##
+
+キャラクターコントローラーは、地形との当たり判定を自動的に行ってくれるコンポーネント。移動量を決めてMove関数に渡すと、移動してくれる。
+
+  * スクリプトCharacterMoveを新規作成する。内容は次のとおり。
+
+```
+var walkSpeed : float = 3.0;
+
+private var velocity : Vector3;
+
+function Update() {
+    var controller : CharacterController = GetComponent(CharacterController);
+
+    velocity = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+    velocity *= walkSpeed;
+
+    controller.Move(velocity * Time.deltaTime);
+}
+```
+
+  * このスクリプトCharacterMoveをシーン上のVantanKun2にドラッグ＆ドロップで追加する。
+  * 実行し、カーソルキーで前後左右に動くことを確認する。
+
+  * シーンにCubeを追加し、壁っぽく配置する。
+  * この壁によって、キャラクターの動きが阻まれることを確認する。
+
+## 見た目の調整 ##
+
+キャラクターの回転やアニメーションは自前で制御しなければならない。
+
+  * スクリプトCharacterMoveに次の処理を加える。
+
+```
+    if (velocity.magnitude > 0.1) {
+        transform.LookAt(transform.position + velocity);
+        animation.CrossFade("Walk");
+    } else {
+        animation.CrossFade("Idle");
+    }
+```
+
+  * 実行し、方向の回転とアニメーションの切り替えが行われることを確認する。
+
+ここで使っているLookAt関数は、Transformの回転(rotation)を、指定した座標に向くよう設定する、というもの。ここでは進行方向の先にある座標を指定することにより、進行方向へとTransformが回転するようにした。
+
+## ジャンプの追加 ##
+
+キャラクターコントローラーでジャンプを実装するのは、いろいろと面倒。しかし落ち着いて実装すれば、それほど難しくない。
+
+重要なのは、キャラクターコントローラーに用意されているプロパティのisGrounded。このプロパティは、キャラクターコントローラーが地面に触れている間のみtrueになる。ジャンプ処理はこれがtrueのときだけ発動できるようにする。
+
+あとは、Y軸の速度変化を自分で管理すること。ジャンプが発動した瞬間に上方向への速度を設定し、その後は重力加速度に従って下方向へ加速していく。
+
+まとめると、次のような処理になる。
+
+```
+var walkSpeed : float = 3.0;
+var jumpSpeed : float = 8.0;
+var gravity : float = 20.0;
+
+private var velocity : Vector3;
+
+function Update() {
+    var controller : CharacterController = GetComponent(CharacterController);
+
+    if (controller.isGrounded) {
+        velocity = Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        velocity *= walkSpeed;
+        
+        if (Input.GetButtonDown("Jump")) {
+            velocity.y = jumpSpeed;
+            animation.Play("Jump");
+        } else {
+            if (velocity.magnitude > 0.1) {
+                transform.LookAt(transform.position + velocity);
+                animation.CrossFade("Walk");
+            } else {
+                animation.CrossFade("Idle");
+            }
+        }
+    }
+
+    velocity.y -= gravity * Time.deltaTime;
+
+    controller.Move(velocity * Time.deltaTime);
+}
+```
+
+  * 実行し、スペースキーでジャンプすることを確認する。
+
+# ラグドール #
+
+ラグドールとは、RigidbodyとJointを組み合わせて作ったパペット人形のようなもの。物理エンジンを使って、人形を転がすことができる。死体の表現などに便利。
+
+> [PAIN - ラグドールを使ったPS3タイトル](http://www.youtube.com/watch?v=FYewODgdI4k)
+
+> [Ragdoll Games - ラグドールを使ったFlashゲーム集](http://www.ragdollgames1.com/)
+
+  * シーンにVantanKun2\_Ragdollを配置する。
+  * 実行して動作を確認する。
+  * ラグドールの位置を変えて（壁の上など）、ラグドールの物理挙動を観察する。
+
+## キャラクターの姿勢のコピー ##
+
+動いているキャラクターから滑らかにラグドールへと移行するには、姿勢のコピーを行う必要がある。これはちょっと面倒な処理なので、あらかじめスクリプトを用意しておいた。`VantanKun2/Script`の中にあるRagdollGeneratorが、それ。
+
+  * シーン中に配置してあるVantanKun2にRagdollGeneratorスクリプトを追加する。
+  * RagdollGeneratorスクリプトのパラメーター"Ragdoll Prefab"にVantanKun2\_Ragdollをドラッグ＆ドロップする。
+
+これで準備完了。あとは、RagdollGenerator内のGenerate関数を呼べば、ラグドールを生成しつつ姿勢をコピーすることができる。
+
+  * スクリプトCharacterMoveのUpdate関数内に次のコードを追加する。
+
+```
+    if (Input.GetButtonDown("Fire1")) {
+        GetComponent("RagdollGenerator").Generate(transform, controller.velocity);
+        Destroy(gameObject);
+    }
+```
+
+  * 実行して動作確認する。Fire1キー（左CTRL）でラグドールに移行すれば成功。
+
+
+# 課題 #
+
+[手本](http://dl.dropbox.com/u/14572092/VgaUnity/CharacterController.html)と同じものを作成する。
+
+ポイントは以下の通り。
+
+  * カーソルキーで前後左右に動く。
+  * ゴールに辿り着くとカメラに向かってGreetアニメーションを再生する。
+
+余力があれば、障害物にぶつかったときに死ぬようにしてみる。そして、死ぬ時の演出としてラグドールを使ってみる。
+
+来週の授業開始時に回収。
+
+## 提出ディレクトリ ##
+
+```
+\\G-Server\Public\GP\Unity\Middleware0720
+```

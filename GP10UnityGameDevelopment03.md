@@ -1,0 +1,370 @@
+# イントロ #
+
+  * 課題の提出。
+  * [次の題材](http://dl.dropbox.com/u/14572092/VgaUnity/BlockShooter.html)について。
+
+# 背景のセットアップ #
+
+  * 壁を作る。
+  * マテリアルと物理マテリアルの設定。
+  * 点光源、平行光源を置く。
+  * カメラの調整。
+
+# 箱 #
+
+  * 箱を作る。
+  * Boxタグを与える。
+  * マテリアルの設定。Rigidbodyの付加。
+  * Red BoxとBlue Boxを作って、それぞれプレハブ化。
+
+# 弾丸 #
+
+  * 弾丸を作る。
+  * マテリアルと物理マテリアルの設定。Rigidbodyの付加。
+  * プレハブ化。
+
+# 銃 #
+
+  * Gunスクリプトを作成する。
+    * Fire1ボタンで弾丸をインスタンス化。
+    * とりあえず前方向に速度を与えてみる。
+  * カメラにGunスクリプトを与える。
+
+```
+var bulletPrefab : GameObject;
+
+function Update () {
+	if (Input.GetButtonDown("Fire1")) {
+		var bullet : GameObject = 
+			Instantiate(bulletPrefab,
+		                transform.position,
+		                transform.rotation);
+		bullet.rigidbody.velocity.z = 60.0;
+	}
+}
+```
+
+  * クリックした位置へ飛ばすように改造。
+
+```
+var bulletPrefab : GameObject;
+
+function Update () {
+	if (Input.GetButtonDown("Fire1")) {
+		var bullet : GameObject = 
+			Instantiate(bulletPrefab,
+		                transform.position,
+		                transform.rotation);
+		
+		var screenPoint : Vector3 = Input.mousePosition;
+		screenPoint.z = 10.0;
+		var worldPoint : Vector3 =
+		    camera.ScreenToWorldPoint(screenPoint);
+		    
+		var dirVector : Vector3 = (worldPoint - transform.position);
+		dirVector.Normalize();
+		                
+		bullet.rigidbody.velocity = dirVector * 60.0;
+	}
+}
+```
+
+  * 箱と弾丸のmassを調整する。
+
+# 当たり判定 #
+
+  * Bulletスクリプトを弾丸に追加する。
+  * 衝突時に相手と自分をDestroyする。
+  * タグ判定を追加する。
+
+```
+function OnCollisionEnter (collisionInfo : Collision) {
+	if (collisionInfo.gameObject.tag == "Box") {
+		Destroy(collisionInfo.gameObject);
+	}
+	Destroy(gameObject);
+}
+```
+
+# メッセージングによるダメージ伝達 #
+
+  * Boxスクリプトを箱プレハブに追加する。
+  * Bulletスクリプト内の衝突処理で、相手をDestroyするのではなく、ApplyDamageメッセージを飛ばすようにする。
+
+```
+function OnCollisionEnter (collisionInfo : Collision) {
+	if (collisionInfo.gameObject.tag == "Box") {
+		collisionInfo.gameObject.SendMessage("ApplyDamage");
+	}
+	Destroy(gameObject);
+}
+```
+
+  * Boxスクリプト側のApplyDamage内で自滅するようにする。
+
+```
+function ApplyDamage () {
+	Destroy(gameObject);
+}
+```
+
+
+# 箱の壊れ方の改良 #
+
+  * 爆発のパーティクルエフェクトを作ってみる。
+
+```
+- Min Sizeを3に変更。
+- Max Sizeを5に変更。
+- Min EnergyとMax Energyを0.5に変更。
+- Min EmissionとMax Emissionを30に変更
+- Rnd VelocityのX, Y, Zをすべて25に変更。
+- Emitter Velocity Scaleを0.1に変更。
+- Rnd Angular Velocityを360に変更。
+- Rnd Rotationをオン。
+- One Shotをオン。
+- Dampingを0.01に変更。
+- Autodestructをオン。
+```
+
+  * マテリアルのシェーダーはParticlesのAdditive (soft)を選択。
+
+```
+var explosionPrefab : GameObject;
+
+function ApplyDamage () {
+	Instantiate(explosionPrefab,
+	            transform.position,
+	            transform.rotation);
+	Destroy(gameObject);
+}
+```
+
+  * killTimerの導入。自滅のタイミングを遅延させる。
+
+```
+var explosionPrefab : GameObject;
+
+private var damagedFlag : boolean;
+private var killTimer : float;
+
+function ApplyDamage () {
+	if (!damagedFlag) {
+		rigidbody.AddForce(Vector3.up * 8.0,
+		                   ForceMode.Impulse);
+		damagedFlag = true;
+		killTimer = 0.5;
+	}
+}
+
+function Update () {
+	if (damagedFlag) {
+		killTimer -= Time.deltaTime;
+		if (killTimer <= 0.0) {
+			Instantiate(explosionPrefab,
+			            transform.position,
+			            transform.rotation);
+			Destroy(gameObject);
+		}
+	}
+}
+```
+
+# 箱の自動生成 #
+
+  * Spawnerスクリプトを作る。
+  * 空のオブジェクトを作りSpawnerスクリプトを与える。
+  * 一定時間毎に交互に箱のインスタンス化を行う。
+
+```
+var redBoxPrefab : GameObject;
+var blueBoxPrefab : GameObject;
+var spawnInterval : float;
+
+private var nextIsRed : boolean;
+private var spawnTimer : float;
+
+function Start () {
+	nextIsRed = true;
+	spawnTimer = spawnInterval;
+}
+
+function Update () {
+	spawnTimer -= Time.deltaTime;
+	if (spawnTimer <= 0.0) {
+		var offset : Vector3 = Vector3(Random.Range(-5.0, 5.0), 0.0, 0.0);
+		Instantiate(nextIsRed ? redBoxPrefab : blueBoxPrefab,
+		            transform.position + offset,
+		            transform.rotation);
+		nextIsRed = !nextIsRed;
+		spawnTimer = spawnInterval;
+	}
+}
+```
+
+# フェンスを作る #
+
+  * Fenceオブジェクトを配置する。
+    * Render系を外すことで透明にする。
+  * コリジョンレイヤーとしてFenceとBulletを新設する。
+    * 相互に当たらないようにする。
+  * FenceオブジェクトをFenceレイヤーに設定する。
+  * BulletオブジェクトをBulletレイヤーに設定する。
+
+# スコアの表示 #
+
+  * 空のゲームオブジェクトを作成し、名前をGameControllerとする。
+  * タグをGameControllerに設定する。
+
+  * Scorekeeperスクリプトを作成し、GameControllerオブジェクトに追加する。
+  * BoxからGameControllerに向かってメッセージングする部分を作る。
+
+```
+function Update () {
+	if (damagedFlag) {
+		killTimer -= Time.deltaTime;
+		if (killTimer <= 0.0) {
+			GameObject.FindWithTag("GameController").SendMessage("OnBoxDestroyed");
+			Instantiate(explosionPrefab,
+			            transform.position,
+			            transform.rotation);
+			Destroy(gameObject);
+		}
+	}
+}
+```
+
+  * スキンを作成する。
+  * Scorekeeperの表示部でスキンを使用するよう改造する。
+
+```
+var skin : GUISkin;
+
+private var score : int;
+
+function OnBoxDestroyed () {
+	score += 10;
+}
+
+function OnGUI () {
+	GUI.skin = skin;
+	GUI.Label(Rect(0, 0, 100, 100),
+	          "Score: " + score.ToString(),
+	          "score");
+}
+```
+
+# 色切り替えへの対応 #
+
+  * Refereeスクリプトを作成し、GameControllerオブジェクトに追加する。
+
+```
+var skin : GUISkin;
+
+var switchInterval : float;
+
+private var targetIsRed : boolean;
+private var switchTimer : float;
+
+function Start () {
+	targetIsRed = true;
+	switchTimer = switchInterval;
+}
+
+function Update () {
+	switchTimer -= Time.deltaTime;
+	if (switchTimer <= 0.0) {
+		targetIsRed = !targetIsRed;
+		switchTimer = switchInterval;
+	}
+}
+
+function OnGUI () {
+	GUI.skin = skin;
+	GUI.Label(Rect(0, 0, Screen.width, Screen.height),
+	          targetIsRed ? "RED!!" : "BLUE!!",
+	          "message");
+}
+```
+
+
+  * GetComponentを使ってScorekeeperと連携する部分を作る。
+
+```
+function OnBoxDestroyed (colorName : String) {
+	var keeper : Scorekeeper = GetComponent(Scorekeeper);
+
+	var targetColorName : String =
+	    targetIsRed ? "Red" : "Blue";
+
+	if (colorName == targetColorName) {
+		keeper.score += 10;
+	} else {
+		keeper.score -= 10;
+	}
+}
+```
+
+  * Scorekeeper側の実験コードは削除する。
+  * 表示の色が切り替わるようにする。
+
+```
+	GUI.color = targetIsRed ? Color.red : Color.blue;
+```
+
+# 制限時間を設ける #
+
+  * Timekeeperスクリプトを作成し、GameControllerオブジェクトに追加する。
+
+```
+var gameLength : float;
+
+function Update () {
+	gameLength -= Time.deltaTime;
+	if (gameLength <= 0.0) {
+		gameObject.BroadcastMessage("TimeUp");
+		GameObject.FindWithTag("MainCamera").SendMessage("TimeUp");
+		enabled = false;
+	}
+}
+```
+
+  * GeneratorをGameControllerの子どもの構造にする。
+  * TimeUpメッセージを受信する処理をGun, Generator, Refereeのそれぞれに追加する。
+
+```
+function TimeUp() {
+    enabled = false;
+}
+```
+
+# 結果表示部分を作る #
+
+  * ResultScreenスクリプトを作成し、GameControllerオブジェクトに追加する。
+    * TimeUpメッセージを受信して処理を開始する。
+    * 開始時disable状態にする。
+
+# カウントダウンを作る #
+
+  * ResultScreenスクリプトを作成し、GameControllerオブジェクトに追加する。
+  * StartGameメッセージの送信部分を作る。
+  * RefereeとSpawnerは開始時disable状態にする。StartGameで開始するように変更する。
+
+# タイトル画面を作る #
+
+  * Mainシーンの複製でTitleシーンを作る。
+
+# 演出を強化する #
+
+  * FlickerEffectを作る。
+  * 音を組み込む。
+
+# 制作物の提出 #
+
+Web Player形式でビルドしたものを、以下のディレクトリに格納する。
+
+```
+\\G-Server\Public\GP\Unity\PS3_0525
+```
+
+次回の始めに回収。

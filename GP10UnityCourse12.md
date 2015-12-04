@@ -1,0 +1,238 @@
+# オブジェクト間連携 #
+
+複数のゲームオブジェクトが相互に連携して動作するための仕組みを学ぶ。
+
+## 雛形のインポート ##
+
+今回の例題の雛形部分を用意しておいた。下記ファイルをダウンロードしてインポートすること。
+
+http://vga-unity.googlecode.com/files/MessagingExample.unitypackage
+
+インポートが完了したらExampleシーンをダブルクリックで開く。
+
+このシーンは、ふたつの箱(Box1, Box2)と、壁(Wall)から構成される。ふたつの箱は、実行開始から1.5秒後に左に向かって移動を開始する。壁はトリガーとなっており、コリジョンは発生しないが、トリガーに触れたゲームオブジェクトの名前をコンソールに出力する。
+
+ふたつの箱には、それぞれFlickerスクリプトとBlinkerスクリプトが付けられている。これらのスクリプトによって、箱は常に点滅している。
+
+今回の例題は、これらの箱が壁に触れたとき、点滅を止めることを目標にする。
+
+## 方法その１・コンポーネントへの直接アクセス ##
+
+**コンポーネント**(Component)とは「部品」のこと。Unityにおける`Transform`とか`Rigidbody`とか`BoxCollider`とかは、全部コンポーネント。
+
+ユーザーが書いたスクリプトもコンポーネントとして扱うことができる。例えばBoxスクリプトは`Box`コンポーネントとなる。
+
+Unityに用意されている標準的なコンポーネントについては、`transform`や`rigidbody`や`collider`などのように、プロパティ経由で簡単にアクセスできる。しかし、レアなコンポーネントや、ユーザーが自作したコンポーネントへは`GetComponent`を使わないとアクセスできない。
+
+### 箱の点滅を止めるには ###
+
+まず、Flicker/Blinkerスクリプトに、点滅を止めるための関数を用意する。
+
+次に、Wallスクリプトの中で`Flicker`/`Blinker`コンポーネントへのアクセスを取得し、そこから点滅を止めるための関数を呼び出す。
+
+### Flickerの拡張 ###
+
+`stopFlag`を用意し、`StopUpdate`関数を呼ぶと止まるようにする。
+
+```
+private var stopFlag : boolean;
+
+function StopUpdate() {
+	stopFlag = true;
+}
+
+function Update() {
+	if (!stopFlag) {
+		var red : float = Mathf.Sin(Time.time * 100.0);
+		renderer.material.color = Color(red, 0, 0, 0);
+	}
+}
+```
+
+### `StopUpdate`を呼び出す ###
+
+Wallスクリプトの`OnTriggerEnter`内で、`GetComponent`関数を使って`Flicker`コンポーネントへのアクセスを取得し、成功したら`StopUpdate`関数を呼び出す。
+
+指定されたコンポーネントが存在しない場合、`GetComponent`関数はnullを返す。これにより、相手が特定のコンポーネントを持つか否かを判定できる。
+
+```
+function OnTriggerEnter(other : Collider) {
+	var flickerComponent : Flicker = other.GetComponent(Flicker);
+	if (flickerComponent != null) {
+		flickerComponent.StopUpdate();
+	}
+}
+```
+
+### Blinkerも対応する ###
+
+BlinkerスクリプトをFlickerスクリプトと同じように拡張する。
+
+Wallスクリプト側も対応する。
+
+```
+function OnTriggerEnter(other : Collider) {
+	var flickerComponent : Flicker = other.GetComponent(Flicker);
+	if (flickerComponent != null) {
+		flickerComponent.StopUpdate();
+	}
+
+	var blinkerComponent : Blinker = other.GetComponent(Blinker);
+	if (blinkerComponent != null) {
+		blinkerComponent.StopUpdate();
+	}
+}
+```
+
+## 方法その２・メッセージングによる連携 ##
+
+コンポーネントへの直接アクセスは、呼び出し側（今回の例ではWallスクリプト）が複雑になるという欠点がある。もし、連携相手のコンポーネントが10種類とか20種類になったら？
+
+Unityでは、連携相手のコンポーネントを特定せずに、関数を呼び出す方法がある。これは\*メッセージング\*と呼ばれる。
+
+メッセージングを使って相手の関数を呼び出すには、`SendMessage`関数を使う。第一引数には、呼び出す対象の関数名を渡す。
+
+```
+function OnTriggerEnter(other : Collider) {
+	other.gameObject.SendMessage("StopUpdate");
+}
+```
+
+これで、相手が何のコンポーネントを持つか特定することなく、`StopUpdate`を呼び出すことができる。
+
+#### 厳密な書き方 ####
+
+`SendMessage`関数は、相手のゲームオブジェクトに呼び出し対象の関数が存在しなかった場合、エラーとなる。そのため、前出の例は、`StopUpdate`をどこにも持たないゲームオブジェクトがWallに触れた場合、エラーを発生させてしまう。
+
+相手のゲームオブジェクトに呼び出し対象の関数が存在しない可能性がある場合は、引数に`SendMessageOptions.DontRequireReceiver`を渡す。これを渡すと、エラーチェックが行われなくなる。
+
+```
+function OnTriggerEnter(other : Collider) {
+	other.gameObject.SendMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
+}
+```
+
+### メッセージのブロードキャスト ###
+
+`Flicker`と`Blinker`だけでなく`Spinner`も止めたい……となった場合、少し面倒なことになる。相手に階層構造があったら、その子供まで調べてメッセージングしなくてはならない。
+
+これを簡単に解決する手段として\*ブロードキャスト\*が用意されている。ブロードキャストを使うと、相手のゲームオブジェクトだけでなく、その階層構造の下にあるゲームオブジェクト全てに対してメッセージが送信される。
+
+メッセージのブロードキャストを行うには、`BroadcastMessage`関数を用いる。
+
+```
+function OnTriggerEnter(other : Collider) {
+	other.gameObject.BroadcastMessage("StopUpdate", SendMessageOptions.DontRequireReceiver);
+}
+```
+
+あとは、`Spinner`スクリプト側で`StopUpdate`に対応すればよい。
+
+```
+private var stopFlag : boolean;
+
+function Update() {
+	if (!stopFlag) {
+		transform.localRotation = Quaternion.AngleAxis(800.0 * Time.time, Vector3.right);
+	}
+}
+
+function StopUpdate() {
+	stopFlag = true;
+}
+```
+
+## メッセージングの引数 ##
+
+今回は使わなかったが、メッセージには引数をひとつだけ添えることができる。
+
+例えば、受け側では次のようにして、
+
+```
+function StopUpdate(flag : boolean) {
+    stopFlag = flag;
+}
+```
+
+送信側では次のようにする。
+
+```
+other.gameObject.SendMessage("StopUpdate", true);
+```
+
+## 自分自身との連携 ##
+
+コンポーネントへの直接アクセスやメッセージングは、ゲームオブジェクト間の連携だけでなく、同じゲームオブジェクト内での連携にも使うことができる。
+
+例えば、Box1スクリプトを次のようにすれば、開始から0.5秒後に自ら点滅を止めることができる。
+
+```
+function Start() {
+	yield WaitForSeconds(0.5);
+
+	var flicker : Flicker = GetComponent(Flicker);
+	flicker.StopUpdate();
+	
+	yield WaitForSeconds(1.5);
+	rigidbody.velocity = Vector3(-12, 0, 0);
+}
+```
+
+あるいは、次のようにメッセージングを用いても実現できる。
+
+```
+function Start() {
+	yield WaitForSeconds(0.5);
+
+	gameObject.SendMessage("StopUpdate");
+	
+	yield WaitForSeconds(1.5);
+	rigidbody.velocity = Vector3(-12, 0, 0);
+}
+```
+
+## 実際のゲームでは？ ##
+
+実際のゲームにおいて、メッセージングは様々な場面に用いられる。
+
+  * 武器が当たったときにダメージ発生。
+    * 武器側から敵側に`ApplyDamage`メッセージを送信。
+
+  * 敵を倒したので点数を加算。
+    * プレイヤー側からスコア管理オブジェクトに`IncrementScore`メッセージを送信。
+
+  * 回復アイテムを拾った！
+    * プレイヤー側からアイテム側に`OnItemPicked`メッセージを送信。アイテムは消える。
+    * プレイヤー側からプレイヤーステータス管理オブジェクトに`RegainLife`メッセージを送信。ライフが回復する。
+
+このようなオブジェクト間連携の仕組みは、Unityを使う場合に限らず、あらゆるゲームの実装に必要とされる。C++を使うにしても、継承をベースにした連携の仕組みには限界が生じる場合があり、メッセージングのような仕組みを自前で組むことも少なくない。
+
+## 課題 ##
+
+[手本](http://dl.dropbox.com/u/14572092/VgaUnity/Messaging2.html)のようなものを作成する。
+
+今回は雛形を用意した。下記URLからダウンロードしてインポートすること。
+
+http://vga-unity.googlecode.com/files/MessagingExampleGame.unitypackage
+
+雛形は、基本的な操作系や挙動を実装してある。ただし、オブジェクト間連携の部分のみ実装していない。これを、メッセージングによって適切に連携するように実装する。
+
+来週の授業開始時に回収。
+
+### ヒント ###
+
+既にコリジョン判定は存在するので、そこから衝突相手に対してダメージメッセージを送信する、あるいは、回復メッセージを送信するように実装を追加する。
+
+プレイヤー側では、PlayerStatusスクリプトでメッセージを受信すればよい。
+
+各メッセージは、引数を使ってダメージ量や回復量を渡せるようにするのがベター。
+
+ダメージ演出のための雛形としてDamageEffectorスクリプトを実装してある。ここでもダメージメッセージを受け取って、演出を発動するように実装を追加するとよい。ただし、DamageEffectorスクリプトはPelvisに付いているので、ダメージメッセージをブロードキャストしてもらう必要がある。
+
+余裕があれば、演出を追加したり、挙動を凝ったものに変更するとよい。例えば、回復の際も演出があった方がいいし（白く点滅とか）、ダメージの際にはカメラも振動させると迫力が出る。たまにプレイヤーをホーミングするダメージボールとかが登場してもいいかもしれない。
+
+### 提出ディレクトリ ###
+
+```
+\\G-Server\Public\GP\Unity\Middleware0831
+```
